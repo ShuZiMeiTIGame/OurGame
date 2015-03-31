@@ -4,7 +4,7 @@
 DB::DB()
 {
  
-
+	//djfldshldshgfl
         pDB =NULL;//数据库指针         
         sqlstr="";//SQL指令    
         errMsg = NULL;//错误信息   
