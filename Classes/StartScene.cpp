@@ -19,15 +19,15 @@ bool StartScene::init(){
 	addChild(bkg);
 	//²Ëµ¥
 	auto startLabel = CCMenuItemFont::create("Start",CC_CALLBACK_1(StartScene::menuCallBack_S,this));
-	startLabel->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + 100));
-	addChild(startLabel);
+	startLabel->setPosition(Vec2(0,100));
 	auto aboutLabel = CCMenuItemFont::create("About", CC_CALLBACK_1(StartScene::menuCallBack_A, this));;
-	aboutLabel->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-	addChild(aboutLabel);
+	aboutLabel->setPosition(Vec2::ZERO);
 	auto exitLabel = CCMenuItemFont::create("Exit", CC_CALLBACK_1(StartScene::menuCallBack_E, this));;
-	exitLabel->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 100));
-	addChild(exitLabel);
+	exitLabel->setPosition(Vec2(0,-100));
 
+	auto menu = Menu::create(startLabel, aboutLabel, exitLabel,NULL);
+	menu->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	this->addChild(menu);
 	return true;
 }
 
