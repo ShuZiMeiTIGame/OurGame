@@ -1,8 +1,8 @@
 #include"GameTime.h"
 Scene* GameTime::createScene(){
 	auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setGravity(Vect(0, -98));
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setGravity(Vect(0, -980));
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto layer = GameTime::create();
 	scene->addChild(layer);
 	return scene;
@@ -19,15 +19,22 @@ bool GameTime::init(){
 	boxNode->setPosition(visibleSize / 2);
 	boxNode->setPhysicsBody(box);
 	addChild(boxNode);
-
+	isSetPosition = false;
 	//测试小球
-	auto ballSprite = Sprite::create("ball.png");
+	ballSprite = Sprite::create("ball.png");
 	ballSprite->setPosition(Vec2(500, 600));
 	auto circleBody = PhysicsBody::createCircle(ballSprite->getContentSize().width / 2);
 	circleBody->setMass(200);
-	circleBody->applyForce(Vect(50000, 80));
+	circleBody->getShape(0)->setDensity(0.6f);
+	circleBody->getShape(0)->setFriction(0.3f);
+	circleBody->getShape(0)->setRestitution(0.8f);
 	ballSprite->setPhysicsBody(circleBody);
 	addChild(ballSprite);
+	//控制菜单
+	auto label = MenuItemFont::create("setPositon",CC_CALLBACK_1(GameTime::OnMenuClicked,this));
+	auto menu = Menu::create(label, NULL);
+	menu->setPosition(Vec2(100,visibleSize.height - 100));
+	addChild(menu);
 	//初始化坐标
 	pre_point = cur_point = Vec2::ZERO;
 
@@ -41,6 +48,10 @@ bool GameTime::init(){
 }
 bool GameTime::OnTouchBegan(Touch* touch, Event* event_){
 	pre_point = cur_point = touch->getLocation();
+	if (isSetPosition){
+		ballSprite->setPosition(cur_point);
+		isSetPosition = false;
+	}
 	return true;
 }
 void GameTime::OnTouchMoved(Touch* touch, Event* event_){
@@ -80,13 +91,16 @@ void GameTime::OnTouchEnded(Touch* touch, Event* event_){
 	int width = abs((cur_point - pre_point).x);
 	int height = abs((cur_point - pre_point).y);
 	auto body2 = PhysicsBody::createBox(Size(width, height));
-	body2->setMass(200);
+	body2->setMass(2000);
 	body2->setGravityEnable(true);
-	//body->set
-	auto edgeNode = Node::create();
-	edgeNode->setPosition(pre_point + (cur_point - pre_point) / 2);
-	edgeNode->setPhysicsBody(body2);
-	addChild(edgeNode);
+	body2->getShape(0)->setDensity(0.5f);
+	body2->getShape(0)->setFriction(0.2f);
+	body2->getShape(0)->setRestitution(0.1f);
+	auto edgeSprite = Scale9Sprite::create("wood.jpg",Rect(pre_point.x,pre_point.y,width,height));
+	//edgeSprite->setContentSize(Size(width, height));
+	edgeSprite->setPosition(pre_point + (cur_point - pre_point) / 2);
+	edgeSprite->setPhysicsBody(body2);
+	addChild(edgeSprite);
 	//清空坐标停止绘制
 	pre_point = cur_point = Vec2::ZERO;
 	pointArray.clear();
@@ -105,4 +119,7 @@ void GameTime::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	if (cur_point == Vec2::ZERO && pre_point == Vec2::ZERO)
 		return;
 	DrawPrimitives::drawRect(pre_point,cur_point);
+}
+void GameTime::OnMenuClicked(Ref* ref){
+	isSetPosition = true;
 }
