@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
 #include"StartScene.h"
+#include"DBtest.h"
 
 USING_NS_CC;
 
@@ -41,7 +41,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
 	auto scene = StartScene::createScene();
-
     // run
     director->runWithScene(scene);
 

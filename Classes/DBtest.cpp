@@ -1,11 +1,6 @@
-#include "HelloWorldScene.h"
+#include "DBtest.h"
 #include "DB.h"
-
-
-
-
 USING_NS_CC;
-
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
