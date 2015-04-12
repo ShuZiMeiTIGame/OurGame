@@ -34,7 +34,7 @@ Sprite*Joint::addJoint(Vec2 p)
 	 auto joint3 = PhysicsJointDistance::construct(ballCBody, boxBBody,
 		Vec2(50, 50), Vec2(0, 0));
 	world->addJoint(joint3);
-	//	PhysicsJointGear
+	//PhysicsJointGear
 	//PhysicsJointFixed//PhysicsJointPin会绕一个点动//PhysicsJointGear会转 两个离心
 	//PhysicsJointSpring刚度 阻尼//PhysicsJointGroove//PhysicsJointFixed会生成连在一起但生成位置很奇怪，刚性捆绑，当前试图将两个矩形刚体边界相连进行捆绑。
 	return ballC;

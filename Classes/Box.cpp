@@ -1,6 +1,6 @@
 #include"Box.h"
 
- Sprite* Box::addBox(Vec2 a, Vec2 b,int c)
+ Sprite* Box::addBox(Vec2 a, Vec2 b,float c)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	int width = abs((a - b).x);
@@ -16,12 +16,13 @@
 	//设置物体的摩擦力  
 	boxBody->getShape(0)->setFriction(0.5f);
 	//设置物体密度  
-	boxBody->getShape(0)->setDensity(7.0f);
+	boxBody->getShape(0)->setDensity(c);
 	//设置质量  
-	boxBody->getShape(0)->setMass(c);
+	//boxBody->getShape(0)->setMass(c);
 	//设置物体是否受重力系数影响  
 	boxBody->setGravityEnable(true);
 	//把物体添加到精灵中  
+	
 	box->setPhysicsBody(boxBody);
 	return box;
 }

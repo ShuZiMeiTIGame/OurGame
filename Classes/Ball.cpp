@@ -29,3 +29,15 @@ Sprite*Ball::addBall(Vec2 a,Vec2 b,int c)
 	//this->addChild(ball, 1);
 	return ball;
 }
+Sprite*Ball::addBall(Vec2 a,int b)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	auto ball = Sprite::create("CloseNormal.png");
+	ball->setPosition(a);
+	ball->setScale(2 *b/ ball->getContentSize().width);
+	PhysicsBody* ballBody = PhysicsBody::createCircle(b, PHYSICSBODY_MATERIAL_DEFAULT);
+	ballBody->getShape(0)->setFriction(0.5f);
+	ballBody->getShape(0)->setDensity(0.1f);
+	ball->setPhysicsBody(ballBody);
+	return ball;
+}

@@ -108,7 +108,7 @@ void GameTime::OnTouchEnded(Touch* touch, Event* event_){
 void GameTime::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	DrawPrimitives::setDrawColor4B(249,209, 9, 255);
 	glLineWidth(2);
-<<<<<<< HEAD
+
 
 	if (pointArray.size() < 2)
 		return;
@@ -116,13 +116,13 @@ void GameTime::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 		DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i+1)->x, (i+1)->y));
 
 	}
-=======
+
 	//if (pointArray.size() < 2)
 	//	return;
 	//for (auto  i = pointArray.begin(); i != pointArray.end() - 2;i++){
 	//	DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i+1)->x, (i+1)->y));
 	//}
->>>>>>> origin/master
+
 
 	if (cur_point == Vec2::ZERO && pre_point == Vec2::ZERO)
 		return;
