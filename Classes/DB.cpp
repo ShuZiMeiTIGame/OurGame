@@ -4,7 +4,7 @@
 DB::DB()
 {
  
-
+	//djfldshldshgfl
         pDB =NULL;//数据库指针         
         sqlstr="";//SQL指令    
         errMsg = NULL;//错误信息   
@@ -40,7 +40,7 @@ else
 }
 
      return success;
- } 
+} 
 
 
 bool  DB::CreateTableWithContent(char *dbExec)			 //新建一个含有参数内容的表
