@@ -1,6 +1,10 @@
 #include "AppDelegate.h"
+<<<<<<< HEAD
 #include "HelloWorldScene.h"
 #include"GameSceneOne.h"
+=======
+#include"StartScene.h"
+>>>>>>> origin/master
 
 USING_NS_CC;
 

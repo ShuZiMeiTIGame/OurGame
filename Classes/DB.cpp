@@ -40,7 +40,7 @@ else
 }
 
      return success;
- } 
+} 
 
 
 bool  DB::CreateTableWithContent(char *dbExec)			 //新建一个含有参数内容的表
