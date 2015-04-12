@@ -32,5 +32,4 @@ class  DB
      int GetPlayerInfoScores(std::string dbExec);   
      bool GetPassInfoIsUnlockedWithIndex(std::string dbExec);
      int GetPassInfoStartsWithIndex(std::string dbExec);  
-
 };
