@@ -168,11 +168,24 @@ void GameTime::OnTouchEnded(Touch* touch, Event* event_){
 void GameTime::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	DrawPrimitives::setDrawColor4B(249,209, 9, 255);
 	glLineWidth(2);
+<<<<<<< HEAD
+=======
+
+
+	if (pointArray.size() < 2)
+		return;
+	for (auto  i = pointArray.begin(); i != pointArray.end() - 2;i++){
+		DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i+1)->x, (i+1)->y));
+
+	}
+
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
 	//if (pointArray.size() < 2)
 	//	return;
 	//for (auto  i = pointArray.begin(); i != pointArray.end() - 2;i++){
 	//	DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i+1)->x, (i+1)->y));
 	//}
+<<<<<<< HEAD
 	if (isTriangle && pointArray.size() > 1){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
 			DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i + 1)->x, (i + 1)->y));
@@ -182,12 +195,28 @@ void GameTime::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	if (isBox)
 		if (!(cur_point == Vec2::ZERO && pre_point == Vec2::ZERO))
 			DrawPrimitives::drawRect(pre_point,cur_point);
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+	//if (!(cur_point == Vec2::ZERO && pre_point == Vec2::ZERO))
+	//	DrawPrimitives::drawRect(pre_point,cur_point);
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
 
 	if (isPolygon && pointArray.size() > 1){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
 			DrawPrimitives::drawLine(Vec2(i->x, i->y), Vec2((i+1)->x, (i+1)->y));
 		}
 	}
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
 }
 void GameTime::OnMenuClicked(Ref* ref){
 	isSetPosition = false;
