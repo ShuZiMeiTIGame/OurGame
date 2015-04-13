@@ -38,6 +38,8 @@ bool GameTime::init(){
 	addChild(ballSprite);
 	//加载关卡
 	loadTollgate(1);
+	//调用update函数判定ball是否到达相应位置
+	scheduleUpdate();
 	return true;
 }
 
@@ -63,14 +65,32 @@ Vec2 GameTime::getIntersection(Vec2 a, Vec2 b, Vec2 c){
 //加载对应关卡
 void GameTime::loadTollgate(int level){
 	
-	auto tollgate = Tollgate::createTollgate(level, false,Vec2::ZERO);
+	int height = 749;
+	auto tollgate = Tollgate::createTollgate(level, false, Vec2(140, height - 244));
+	
+	
+	ballSprite->setPosition(tollgate->getBallPostion());
 	auto bodies = tollgate->getbodiesArray();
 	std::vector<Vec2> poss;
 	poss.push_back(Vec2(0, 500));
 	poss.push_back(Vec2(230, 0));
 
-	auto body = TollgateBody::createTollgateBody(TollgateBody::RECT, Vec2(300 , 100), &poss);
-	bodies->pushBack(body);
+	auto body1 = TollgateBody::createTollgateBody(TollgateBody::RECT, Vec2(115 , 250), &poss);
+	bodies->pushBack(body1);
+
+	std::vector<Vec2> poss2;
+	poss2.push_back(Vec2(250, height - 345));
+	poss2.push_back(Vec2(1420, height - 364));
+	auto body2 = TollgateBody::createTollgateBody(TollgateBody::RECT, Vec2(837, height - 354), &poss2);
+	bodies->pushBack(body2);
+
+	std::vector<Vec2> poss3;
+	poss3.push_back(Vec2(696, 0));
+	poss3.push_back(Vec2(835, height - 369));
+	poss3.push_back(Vec2(981, 0));
+	auto body3 = TollgateBody::createTollgateBody(TollgateBody::TRIANGLE, Vec2(837, height - 354), &poss3);
+	bodies->pushBack(body3);
+
 
 	auto j = bodies->begin();
 	while (j != bodies->end()){
@@ -104,5 +124,8 @@ void GameTime::loadTollgate(int level){
 }
 void GameTime::onEnter(){
 	Layer::onEnter();
+}
+void GameTime::update(float df){
+	//if (ballSprite->getPosition().x)
 }
 
