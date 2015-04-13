@@ -17,6 +17,8 @@ private:
 	void OnTouchEnded(Touch* touch, Event* event_);
 	//菜单回调函数
 	void OnMenuClicked(Ref* ref);
+	//drawNode
+	DrawNode* drawNode;
 	Vec2 pre_point;
 	Vec2 cur_point;
 	bool isSetPosition;

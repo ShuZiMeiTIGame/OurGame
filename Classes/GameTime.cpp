@@ -9,9 +9,9 @@ Scene* GameTime::createScene(){
 	auto gameLayer = GameTime::create();
 	//绘画层
 	auto paintingLayer = PaintingLayer::create();
-	scene->addChild(paintingLayer, 3);
 	scene->addChild(bgLayer, 1);
 	scene->addChild(gameLayer, 2);
+	scene->addChild(paintingLayer, 3);
 	return scene;
 }
 bool GameTime::init(){
@@ -26,7 +26,6 @@ bool GameTime::init(){
 	boxNode->setPosition(visibleSize / 2);
 	boxNode->setPhysicsBody(box);
 	addChild(boxNode);
-	
 	//测试小球
 	ballSprite = Ball::addBall(Vec2(500, 600),20);
 	/*ballSprite->setPosition(Vec2(500, 600));
@@ -37,7 +36,6 @@ bool GameTime::init(){
 	circleBody->getShape(0)->setRestitution(0.8f);
 	ballSprite->setPhysicsBody(circleBody);*/
 	addChild(ballSprite);
-
 	//加载关卡
 	loadTollgate(1);
 	return true;
@@ -65,16 +63,14 @@ Vec2 GameTime::getIntersection(Vec2 a, Vec2 b, Vec2 c){
 //加载对应关卡
 void GameTime::loadTollgate(int level){
 	
-	auto tollgate = Tollgate::createTollgate(level, false);
+	auto tollgate = Tollgate::createTollgate(level, false,Vec2::ZERO);
 	auto bodies = tollgate->getbodiesArray();
 	std::vector<Vec2> poss;
-	poss.push_back(Vec2(100, 100));
-	poss.push_back(Vec2(300, 300));
-	int i = 5;
-	while (i--){
-		auto body = TollgateBody::createTollgateBody(TollgateBody::RECT, Vec2(300*i, 100), &poss);
-		bodies->pushBack(body);
-	}
+	poss.push_back(Vec2(0, 500));
+	poss.push_back(Vec2(230, 0));
+
+	auto body = TollgateBody::createTollgateBody(TollgateBody::RECT, Vec2(300 , 100), &poss);
+	bodies->pushBack(body);
 
 	auto j = bodies->begin();
 	while (j != bodies->end()){
@@ -103,7 +99,6 @@ void GameTime::loadTollgate(int level){
 		else if (type == TollgateBody::TRIANGLE){
 
 		}
-
 		j++;
 	}
 }

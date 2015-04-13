@@ -13,7 +13,9 @@ bool PaintingLayer::init(){
 	isBox = false;
 	//初始化坐标
 	pre_point = cur_point = Vec2::ZERO;
-
+	//创建DrawNode
+	drawNode = DrawNode::create();
+	addChild(drawNode,20);
 	//控制菜单
 	auto label = MenuItemFont::create("setPositon", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
 	label->setTag(0);
@@ -61,6 +63,8 @@ bool PaintingLayer::OnTouchBegan(Touch* touch, Event* event_){
 }
 void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 	cur_point = touch->getLocation();
+	if (isBox)
+		drawNode->clear();
 	if (isPolygon || isTriangle){
 		if (pointArray.size() == 1){
 			pointArray.push_back(cur_point);
@@ -69,6 +73,7 @@ void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 			pointArray.pop_back();
 			pointArray.push_back(cur_point);
 		}
+		drawNode->clear();
 	}
 }
 void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
@@ -97,32 +102,14 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 			//node->setPhysicsBody(polygon);
 			//addChild(node);
 			pointArray.clear();
+			drawNode->clear();
 			//delete(points);
 			//points = nullptr;
 		}
 	}
-	//if ((cur_point - pre_point).getLengthSq() > 50){
-	//	pointArray.push_back(pre_point);
-	//	pointArray.push_back(cur_point);
-	//	pre_point = cur_point;
-	//}
-	//if (pointArray.size() < 2)
-	//	return;
-	//for (auto i = pointArray.begin(); i != pointArray.end() - 2; i++){
-	//	auto body = PhysicsBody::createEdgeSegment(Vec2(i->x, i->y), Vec2((i + 1)->x, (i + 1)->y));
-	//	int width = abs(i->x - (i +标头. 1)->x);
-	//	int height = abs(i->y - (i + 1)->y);
-	//	auto body2 = PhysicsBody::createBox(Size(width, height));
-	//	body2->setMass(200);
-	//	body2->setGravityEnable(true);
-	//	//body->set
-	//	auto edgeNode = Node::create();
-	//	//edgeNode->setPosition(Vec2(i->x,i->y));
-	//	edgeNode->setPhysicsBody(body);
-	//	addChild(edgeNode);
-	//}
 
 	if (isBox){
+		drawNode->clear();
 		int width = abs((cur_point - pre_point).x);
 		int height = abs((cur_point - pre_point).y);
 		auto body2 = PhysicsBody::createBox(Size(width, height));
@@ -137,11 +124,13 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 		edgeSprite->setPhysicsBody(body2);
 		addChild(edgeSprite);
 		pointArray.clear();
+
 	}
 	if (isTriangle){
 		if (pointArray.size() == 3){
 			//auto triangle = San::addSan();
 			pointArray.clear();
+			drawNode->clear();
 		}
 
 	}
@@ -151,30 +140,27 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	//DrawPrimitives::setDrawColor4B(3, 171, 174, 255);//看不见
 	//glLineWidth(2.0f);
-	auto drawNode = DrawNode::create();
-	this->addChild(drawNode);
-
+	Color4F color = Color4F(Color4B(3,171,174,255));
 	if (isTriangle && pointArray.size() > 1){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
-			DrawPrimitives::drawLine(*i, *(i + 1));
-			CHECK_GL_ERROR_DEBUG();
+			//DrawPrimitives::drawLine(*i, *(i + 1));
+			drawNode->drawSegment(*i, *(i + 1), 2, color);
 		}
 		if (pointArray.size() == 3){
 			auto first = pointArray.begin();
 			auto end = pointArray.end() - 1;
-			DrawPrimitives::drawLine(*end, *first);
-			CHECK_GL_ERROR_DEBUG();
+			//DrawPrimitives::drawLine(*end, *first);
+			drawNode->drawSegment(*end, *first, 2, color);
 		}
 	}
 	else if (isBox){
 		if (!(cur_point == Vec2::ZERO && pre_point == Vec2::ZERO)){
-			CHECK_GL_ERROR_DEBUG();
+			drawNode->drawRect(pre_point, cur_point, color);
 		}
 	}		
 	else if (isPolygon && pointArray.size() > 1){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
-			DrawPrimitives::drawLine(*i, *(i + 1));
-			CHECK_GL_ERROR_DEBUG();
+			drawNode->drawSegment(*i, *(i + 1), 2, color);
 		}
 	}
 }
