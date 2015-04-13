@@ -17,6 +17,7 @@ public:
 	void onEnter();
 	CREATE_FUNC(GameTime);
 	void loadTollgate(int level);
+	virtual void update(float df);
 private:
 	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
