@@ -1,11 +1,33 @@
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
 #include "cocos2d.h"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+class HelloWorld2 : public cocos2d::Layer
+=======
+>>>>>>> origin/master
 USING_NS_CC;
 class HelloWorld : public cocos2d::Layer
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
 {
 public:
     static cocos2d::Scene* createScene();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
+    virtual bool init();
+    //Test Test Test Test Test Test Test Test Test Test Test Test 
+    // a selector callback
+    void menuCloseCallback(cocos2d::Ref* pSender);
+    
+    // implement the "static create()" method manually
+    CREATE_FUNC(HelloWorld2);
+=======
+>>>>>>> origin/master
     virtual bool init();   
     CREATE_FUNC(HelloWorld);
 	bool onTouchBegan(Touch *touch, Event *unused_event);
@@ -39,7 +61,15 @@ private:
 	bool isBox;
 	bool isSan;
 	Sprite* box;
+<<<<<<< HEAD
 };
 
 
 #endif 
+=======
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
+};
+
+
+#endif 
+>>>>>>> origin/master

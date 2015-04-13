@@ -1,10 +1,18 @@
 #include "HelloWorldScene.h"
+<<<<<<< HEAD
 #include"PhysicsEngine.h"
+=======
+#include"Ball.h"
+#include"Box.h"
+#include"San.h"
+#include"Wall.h"
+>>>>>>> origin/master
 //#include"addJoint.h"
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* HelloWorld2::createScene()
 {
+<<<<<<< HEAD
 	//使用物理世界创建场景
 	auto scene = Scene::createWithPhysics();
 	//显示物理世界调试状态, 显示红色的框, 方便调试
@@ -16,7 +24,38 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
+=======
+<<<<<<< HEAD
+    // 'scene' is an autorelease object
+    auto scene = Scene::create();
+    
+    // 'layer' is an autorelease object
+    auto layer = HelloWorld2::create();
+
+    // add layer as a child to scene
+    scene->addChild(layer);
+
+    // return the scene
+    return scene;
+}
+
+// on "init" you need to initialize your instance
+bool HelloWorld2::init()
+=======
+	//使用物理世界创建场景
+	auto scene = Scene::createWithPhysics();
+	//显示物理世界调试状态, 显示红色的框, 方便调试
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//把空间保持我们创建的层中，就是上面所说m_world的作用，方便后面设置空间的参数  
+	//layer->setPhyWorld(scene->getPhysicsWorld());
+	auto layer = HelloWorld::create();
+	scene->addChild(layer);
+    return scene;
+}
+
+>>>>>>> origin/master
 bool HelloWorld::init()
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
 {
     if ( !Layer::init() )
     {
@@ -53,9 +92,15 @@ bool HelloWorld::init()
 	isBall = false;
 	isBox = false;
 	//
+<<<<<<< HEAD
 	//Wall*a = new Wall();
 	//wall01 = a->addWall(Vec2(600, 300));
 	//addChild(wall01, 1);
+=======
+	Wall*a = new Wall();
+	wall01 = a->addWall(Vec2(600, 300));
+	addChild(wall01, 1);
+>>>>>>> origin/master
 	//drawLine(Vec2(300,300),Vec2(300,500));
 	//LineBody(Vec2(300, 300), Vec2(300, 500));
 	//LineBody(Vec2(300, 300), Vec2(100, 300));
@@ -103,7 +148,12 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
 	}
 	else{}
 	Vec2 location = touch->getLocation();
+<<<<<<< HEAD
 	//addJoint(location);
+=======
+	//
+	addJoint(location);
+>>>>>>> origin/master
 	//addNewSpriteAtPosition(location);
 	return true;
 }
@@ -113,6 +163,7 @@ void HelloWorld::onTouchMoved(Touch *touch, Event *unused_event)
 	b1  = touchPoint;
 	
 
+<<<<<<< HEAD
 }
 void HelloWorld::onTouchEnded(Touch *touch, Event *unused_event){
 	Vec2 location = touch->getLocation();
@@ -330,3 +381,245 @@ void HelloWorld::addJointFixed(Vec2 p,int i)
 }
 
 	
+=======
+<<<<<<< HEAD
+    /////////////////////////////
+    // 2. add a menu item with "X" image, which is clicked to quit the program
+    //    you may modify it.
+
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto closeItem = MenuItemImage::create(
+                                           "CloseNormal.png",
+                                           "CloseSelected.png",
+                                           CC_CALLBACK_1(HelloWorld2::menuCloseCallback, this));
+    
+	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+                                origin.y + closeItem->getContentSize().height/2));
+
+    // create menu, it's an autorelease object
+    auto menu = Menu::create(closeItem, NULL);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu, 1);
+
+    /////////////////////////////
+    // 3. add your codes below...
+=======
+}
+void HelloWorld::onTouchEnded(Touch *touch, Event *unused_event){
+	Vec2 location = touch->getLocation();
+	 b1 = location;
+	 if (isBall)
+	 {
+		 addChild(Ball::addBall(a1, b1,500));
+	 }
+	 if (isBox)
+	 {
+		 addChild(Box::addBox(a1, b1,500));
+		 
+	 }
+	 if (isSan)
+	 {
+		 Point points[3] = { Point(-29.00000, -25.00000), Point(-1.00000, 28.00000), Point(31.00000, -25.00000) };
+		 addChild(San::addSan(a1,b1,points));
+	 }
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
+
+	 b1 = a1 = Vec2(0, 0);
+}
+void HelloWorld::addBox2(){
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	box2 = Sprite::create("2.png");
+	box2->setPosition(800,500);
+	addChild(box2, 2);
+}
+void HelloWorld::addBall2(){
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	ball2 = Sprite::create("CloseNormal.png");
+	ball2->setPosition(800, 400);
+	addChild(ball2, 2);
+}
+void HelloWorld::addSan2(){
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	san2= Sprite::create("3.png");
+	san2->setPosition(800, 300);
+	addChild(san2, 2);
+}
+void HelloWorld::update(float w)
+{
+	static int speedY = -1;
+//	static int speedX = -1;
+	wall01->setPositionY(wall01->getPositionY() + speedY);
+	//wall01->setPositionX(wall01->getPositionX() + speedX);
+	if (wall01->getPositionY() >= 500 && speedY > 0)
+	{
+		speedY = -1;
+	}
+	if (wall01->getPositionY() <= 200 && speedY<0)
+	{
+		speedY = +1;
+	}
+	//if (wall01->getPositionX() >= 600 && speedX > 0)
+	//{
+	//	speedX = -1;
+	//}
+	//if (wall01->getPositionX() <= 400 && speedX<0)
+	//{
+	//	speedX = +1;
+	//}
+}
+void HelloWorld::LineBody(Vec2 a, Vec2 b)
+{
+	PhysicsBody*lineBody = PhysicsBody::createEdgeSegment(a, b); 
+	auto drawNode = DrawNode::create();
+	drawNode->setPhysicsBody(lineBody);
+	addChild(drawNode, 1);
+} 
+void  HelloWorld::draw(Renderer *renderer, const Mat4& transform, uint32_t flags)
+{
+	if (isBox)
+	{
+		//DrawPrimitives::drawRect(a1, b1); 
+		DrawPrimitives::drawSolidRect(a1, b1, Color4F::WHITE);		
+	}
+	if (isBall)
+	{
+		DrawPrimitives::drawSolidCircle((a1+b1)/2 , (a1-b1).x, CC_DEGREES_TO_RADIANS(90), 50, 1.0f, 1.0f);
+	}
+}
+void HelloWorld::addJoint(Vec2 p)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto boxA = Sprite::create("4.png");
+	boxA->setPosition(p + Vec2(0,  2*boxA->getContentSize().width/3));
+	auto boxABody = PhysicsBody::createBox(boxA->getContentSize());
+
+	boxA->setPhysicsBody(boxABody);
+	addChild(boxA, 1);
+	////
+	auto boxB = Sprite::create("4.png");
+	/////////////
+	boxB->setPosition(p + Vec2(0, 0));
+	auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
+	//boxBBody->getShape(0)->setMass(500);
+	boxB->setPhysicsBody(boxBBody);
+	addChild(boxB, 1);
+	//
+	auto ballC = Sprite::create("CloseNormal.png");
+	ballC->setPosition(p + Vec2(0, 0));
+	auto ballCBody = PhysicsBody::createCircle(ballC->getContentSize().height/2);//这里可以改物理物体的形状
+	ballC->setPhysicsBody(ballCBody);
+	addChild(ballC, 1);
+
+	auto world = this->getScene()->getPhysicsWorld();
+	//PhysicsJointDistance* joint = PhysicsJointDistance::construct(boxABody, boxBBody,
+	//	Vec2(0, 0), Vec2(0, 0));
+	//world->addJoint(joint);
+	PhysicsJointMotor*joint = PhysicsJointMotor::construct(boxABody, boxBBody,1);
+	PhysicsJointDistance * joint2 = PhysicsJointDistance::construct(boxABody, boxBBody,
+	Vec2(0, 0), Vec2(0, 0));
+//PhysicsJointFixed*joint3 = PhysicsJointFixed::construct(boxBBody, ballCBody,Vec2(p));
+	world->addJoint(joint2);
+//world->addJoint(joint3);
+	world->addJoint(joint);
+
+	//PhysicsJointGear离心转动  a,b, ,转动的比列
+	//PhysicsJointMotor  马达
+	//PhysicsJointRatchet 齿轮
+	//PhysicsJointFixed 固定
+	//PhysicsJointPin会绕一个点动
+	//PhysicsJointSpring类似于一个弹簧 stiffness就是拉的得力越小拉的越大 damping阻尼
+	//PhysicsJointGroove有一个可以根据力上下滑动的沟，槽
+	//PhysicsJointRotarySpring 旋转的弹簧
+	//PhysicsJointLimit 刚体间有一个约束但不是固定的 可以拉长缩短 
+	//PhysicsJointRotaryLimit
+	//test 里面的physics 可以自己去试
+}
+void HelloWorld::addJointFixed(Vec2 p,int i)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	auto world = this->getScene()->getPhysicsWorld();
+	if (i = 0)
+	{
+		auto boxB = Sprite::create("2.png");
+		boxB->setPosition(p + Vec2(0, 2 * boxB->getContentSize().height));
+		auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
+		boxB->setPhysicsBody(boxBBody);
+		addChild(boxB, 1);
+
+		auto ballC = Sprite::create("CloseNormal.png");
+		ballC->setPosition(p + Vec2(0, 4 * boxB->getContentSize().height));
+		auto ballCBody = PhysicsBody::createCircle(ballC->getContentSize().height / 2);
+		ballC->setPhysicsBody(ballCBody);
+		addChild(ballC, 1);
+		PhysicsJointFixed*joint3 = PhysicsJointFixed::construct(ballCBody, boxBBody,
+		Vec2(p));
+		world->addJoint(joint3);
+	}
+	if (i=1)
+	{
+		auto boxB = Sprite::create("2.png");
+		boxB->setPosition(p + Vec2(0, 2 * boxB->getContentSize().height));
+		auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
+		boxB->setPhysicsBody(boxBBody);
+		addChild(boxB, 1);
+
+<<<<<<< HEAD
+void HelloWorld2::menuCloseCallback(Ref* pSender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+    return;
+#endif
+=======
+		auto ballC = Sprite::create("CloseNormal.png");
+		ballC->setPosition(p + Vec2(0, 4 * boxB->getContentSize().height));
+		auto ballCBody = PhysicsBody::createCircle(ballC->getContentSize().height / 2);
+		ballC->setPhysicsBody(ballCBody);
+		addChild(ballC, 1);
+		PhysicsJointPin*joint3 = PhysicsJointPin::construct(ballCBody, boxBBody,
+			Vec2(p));
+		world->addJoint(joint3);
+	}
+	if (i=3)
+	{
+		auto boxB = Sprite::create("1.png");
+		boxB->setPosition(p + Vec2(0, 4 * boxB->getContentSize().height));
+		auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
+		boxB->setPhysicsBody(boxBBody);
+		addChild(boxB, 1);
+		auto ballC = Sprite::create("CloseNormal.png");
+		ballC->setPosition(p + Vec2(0, 0));
+		auto ballCBody = PhysicsBody::createCircle(ballC->getContentSize().height / 2);//这里可以改物理物体的形状
+		ballC->setPhysicsBody(ballCBody);
+		addChild(ballC, 1);
+>>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
+
+		auto world = this->getScene()->getPhysicsWorld();
+		PhysicsJointLimit *joint3 = PhysicsJointLimit::construct(ballCBody, boxBBody,
+			Vec2(0, 0), Vec2(0, 0));
+		world->addJoint(joint3);
+	}
+	if (i=4)
+	{
+		auto boxB = Sprite::create("1.png");
+		boxB->setPosition(p + Vec2(0, 4 * boxB->getContentSize().height));
+		auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
+		boxB->setPhysicsBody(boxBBody);
+		addChild(boxB, 1);
+		auto ballC = Sprite::create("CloseNormal.png");
+		ballC->setPosition(p + Vec2(0, 0));
+		auto ballCBody = PhysicsBody::createCircle(ballC->getContentSize().height / 2);//这里可以改物理物体的形状
+		ballC->setPhysicsBody(ballCBody);
+		addChild(ballC, 1);
+
+		auto world = this->getScene()->getPhysicsWorld();
+		PhysicsJointSpring *joint3 = PhysicsJointSpring::construct(ballCBody, boxBBody,
+			Vec2(0, 0), Vec2(0, 0), 1000, 0);
+		world->addJoint(joint3);
+	}
+}
+
+	
+>>>>>>> origin/master

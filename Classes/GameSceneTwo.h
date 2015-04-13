@@ -1,5 +1,6 @@
 #ifndef __GAMESCENETWO_H__
 #define __GAMESCENETWO_H__
+<<<<<<< HEAD
 #include "cocos2d.h"
 #include"HelloWorldScene.h"
 
@@ -20,5 +21,8 @@ private:
 	Sprite*boxA;
 	Sprite*boxB;
 };
+=======
+
+>>>>>>> origin/master
 
 #endif

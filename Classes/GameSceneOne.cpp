@@ -1,13 +1,23 @@
 #include"GameSceneOne.h"
+<<<<<<< HEAD
 #include"DrawBody.h"
 
+=======
+#include"Ball.h"
+#include"DrawBody.h"
+#include"Box.h"
+>>>>>>> origin/master
 USING_NS_CC;
 
 Scene*GameSceneOne::createScene(){
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);	//显示物理世界调试状态, 显示红色的框, 方便调试
 	auto layer = GameSceneOne::create();
+<<<<<<< HEAD
 	scene->getPhysicsWorld()->setGravity(Vect(0,-490));
+=======
+	scene->getPhysicsWorld()->setGravity(Vect(0,-980));
+>>>>>>> origin/master
 	scene->addChild(layer);
 	return scene;
 }
@@ -36,7 +46,11 @@ bool GameSceneOne::init(){
 	//_eventDispatcher->addEventListenerWithSceneGraphPriority(Listener, this);
 
 
+<<<<<<< HEAD
 	Sprite *a =PhysicsWor ::addBall(Vec2(100, 500),20);
+=======
+	Sprite *a = Ball::addBall(Vec2(100, 500),20);
+>>>>>>> origin/master
 	addChild(a, 1);
 	a->setTag(1);
 	auto background = Sprite::create("background2.png");
@@ -64,7 +78,10 @@ bool GameSceneOne::init(){
 	{
 		//addChild(DrawBody::addDraw(pointsOne[i], pointsOne[i + 1]), 1);
 		addChild(DrawBody::addDraw(pointsTwo[i], pointsTwo[i + 1]), 1);
+<<<<<<< HEAD
 		Vector<Vec2>points();
+=======
+>>>>>>> origin/master
 	}
 
 	auto sprite = Sprite::create("win.png");
@@ -80,9 +97,14 @@ bool GameSceneOne::init(){
 void GameSceneOne::onEnter()
 {
 	Node::onEnter();///////////////////////////////////////
+<<<<<<< HEAD
 	//Joint1(Vec2(639, 300));
 	//Joint2(Vec2(639, 300));
 	Joint3(Vec2(50, 550));
+=======
+	Joint1(Vec2(639, 300));
+	//Joint2(Vec2(639, 300));
+>>>>>>> origin/master
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [=](Touch *touch, Event *event)
 	{
@@ -94,7 +116,11 @@ void GameSceneOne::onEnter()
 	{
 		Point touchPoint = convertTouchToNodeSpace(touch);
 		b = touchPoint;
+<<<<<<< HEAD
 		addChild( PhysicsWor::addBox(a, b, 0.5), 1);
+=======
+		addChild(Box::addBox(a, b, 0.5), 1);
+>>>>>>> origin/master
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
@@ -155,7 +181,10 @@ void GameSceneOne::Joint2(Vec2 p)
 	boxB->setPosition(p + Vec2(0, boxB->getContentSize().width));
 	auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
 	boxBBody->setGravityEnable(true);
+<<<<<<< HEAD
 	boxBBody->getShape(0)->setFriction(0.5f);
+=======
+>>>>>>> origin/master
 	boxBBody->setDynamic(false);
 	boxBBody->getShape(0)->setRestitution(0);
 	boxB->setPhysicsBody(boxBBody);
@@ -166,6 +195,7 @@ void GameSceneOne::Joint2(Vec2 p)
 		Vec2(0, 0), Vec2(0, 0), 400, 10);
 	world->addJoint(joint);
 }
+<<<<<<< HEAD
 void GameSceneOne::Joint3(Vec2 p)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -207,3 +237,5 @@ void GameSceneOne::Joint3(Vec2 p)
 	world->addJoint(joint4);
 
 }
+=======
+>>>>>>> origin/master
