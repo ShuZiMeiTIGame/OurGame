@@ -3,6 +3,9 @@
 #include"cocos2d.h"
 #include"cocos-ext.h"
 #include"Tollgate.h"
+#include"PhysicsEngine.h"
+#include"BackgroundLayer.h"
+#include"PaintingLayer.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
 
@@ -14,25 +17,11 @@ public:
 	void onEnter();
 	CREATE_FUNC(GameTime);
 	void loadTollgate(int level);
-	virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags);
 private:
-	//触摸回调函数
-	bool OnTouchBegan(Touch* touch, Event* event_);
-	void OnTouchMoved(Touch* touch, Event* event_);
-	void OnTouchEnded(Touch* touch, Event* event_);
-	//多边形处理函数
+	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
 	//求两线段是交点
 	Vec2 getIntersection(Vec2 a,Vec2 b,Vec2 c);
-	//菜单回调函数
-	void OnMenuClicked(Ref* ref);
-	Vec2 pre_point;
-	Vec2 cur_point;
 	Sprite* ballSprite;
-	bool isSetPosition;
-	bool isBox;
-	bool isTriangle;
-	bool isPolygon;
-	std::vector<Vec2> pointArray;
 };
 #endif

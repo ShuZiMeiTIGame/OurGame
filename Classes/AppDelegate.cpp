@@ -1,15 +1,5 @@
 #include "AppDelegate.h"
-<<<<<<< HEAD
-#include "HelloWorldScene.h"
-#include"GameSceneOne.h"
-=======
 #include"StartScene.h"
-<<<<<<< HEAD
-#include"DBtest.h"
-=======
->>>>>>> origin/master
->>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
-
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -19,6 +9,16 @@ AppDelegate::AppDelegate() {
 AppDelegate::~AppDelegate() 
 {
 }
+//if you want a different context,just modify the value of glContextAttrs
+//it will takes effect on all platforms
+void AppDelegate::initGLContextAttrs()
+{
+	//set OpenGL context attributions,now can only set six attributions:
+	//red,green,blue,alpha,depth,stencil
+	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8 };
+
+	GLView::setGLContextAttrs(glContextAttrs);
+}
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
@@ -26,9 +26,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
 	
     if(!glview) {
-        glview = GLView::create("My Game");
+        glview = GLViewImpl::create("My Game");
+		glview->setFrameSize(1336, 900);
         director->setOpenGLView(glview);
-		//glview->setFrameSize(480, 320);
     }
 
     // turn on display FPS
@@ -38,12 +38,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-<<<<<<< HEAD
-	auto scene = StartScene::createScene();
-=======
-    auto scene = HelloWorld::createScene();
 
->>>>>>> c91268dcd4d76477740f67f943c9e815866036a1
+	auto scene = StartScene::createScene();
     // run
     director->runWithScene(scene);
 

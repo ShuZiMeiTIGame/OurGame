@@ -7,7 +7,11 @@ class TollgateBody:public Ref
 public:
 	TollgateBody();
 	TollgateBody(int type, Vec2 pos, std::vector<Vec2>* posArray);
+
+
 	static TollgateBody* createTollgateBody(int type, Vec2 pos, std::vector<Vec2>* posArray);
+
+
 	void setType(int type);
 	int  getType();
 	void setPosition(Vec2 pos);
