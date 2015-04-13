@@ -4,12 +4,8 @@ Sprite*PhysicsWor::addWall(Vec2 p)
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto wall = Sprite::create("2.png");
 	wall->setPosition(p.x, p.y);
-<<<<<<< HEAD
 	Point points[3] = { Point(-80.00000, -20.00000), Point(80.00000, 20.00000), Point(80.00000, -20.00000) };
 	PhysicsBody* boxBody = PhysicsBody::createPolygon(points, 3);
-=======
-	PhysicsBody*boxBody= PhysicsBody::createBox(wall->getContentSize());
->>>>>>> origin/master
 	boxBody->getShape(0)->setRestitution(0.0f);
 	boxBody->getShape(0)->setFriction(0.5f);
 	boxBody->getShape(0)->setDensity(7.0f);
@@ -69,12 +65,13 @@ Sprite*PhysicsWor::addSan(Vec2 a, Vec2 b, std::vector<Vec2>* pos)
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto san = Sprite::create("3.png");
 	san->setPosition(a);
-	for (int i = 0; i <5; i++)
-	{
-		//Point points[] = { pos[i] };
+	Point points[3];
+	int j = 0;
+	auto i = pos->begin();
+	while (i != pos->end()){
+		points[j++] = *i;
+		i++;
 	}
-
-	Point points[] = { Vec2(1,2)};
 	PhysicsBody* boxBody = PhysicsBody::createPolygon(points, 3);
 	boxBody->getShape(0)->setRestitution(1.0f);
 	boxBody->getShape(0)->setFriction(0.1f);

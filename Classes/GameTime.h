@@ -6,6 +6,7 @@
 #include"PhysicsEngine.h"
 #include"BackgroundLayer.h"
 #include"PaintingLayer.h"
+#include"StatusLayer.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
 
@@ -19,10 +20,15 @@ public:
 	void loadTollgate(int level);
 	virtual void update(float df);
 private:
+	//当前关卡
+	int _level;
+	//过关处理函数
+	void nextTollgate();
 	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
 	//求两线段是交点
 	Vec2 getIntersection(Vec2 a,Vec2 b,Vec2 c);
+	int _curLevel;
 	Sprite* ballSprite;
 };
 #endif
