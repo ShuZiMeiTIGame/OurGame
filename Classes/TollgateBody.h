@@ -6,9 +6,9 @@ class TollgateBody:public Ref
 {
 public:
 	TollgateBody();
-	TollgateBody(int type, Vec2 pos, std::vector<Vec2>* posArray);
+	TollgateBody(int type, Vec2 pos);
 	TollgateBody(int type, Vec2 pos, int radius);
-	static TollgateBody* createTollgateBody(int type, Vec2 pos, std::vector<Vec2>* posArray);
+	static TollgateBody* createTollgateBody(int type, Vec2 pos);
 	static TollgateBody* createTollgateCircle(int type, Vec2 pos, int radius);
 	void setType(int type);
 	int  getType();
@@ -25,6 +25,6 @@ private:
 	int _type;
 	int _radius;
 	Vec2 _position;
-	std::vector<Vec2>* _posArray;
+	std::vector<Vec2> _posArray;
 };
 #endif
