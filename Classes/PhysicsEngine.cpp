@@ -64,17 +64,29 @@ Sprite* PhysicsWor::addBox(Vec2 a, Vec2 b, float c)
 	return box;
 }
 
-Sprite*PhysicsWor::addSan(Vec2 a, Vec2 b, std::vector<Vec2>* pos)
+Sprite*PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto san = Sprite::create("3.png");
-	san->setPosition(a);
-	for (int i = 0; i <5; i++)
+	san->setPosition(a); 
+	
+	Point points[3];
+	int i=0;
+	auto j = pos->begin();
+	for (; j!= pos->end(); j++)
 	{
-		//Point points[] = { pos[i] };
+		points[3] = { *j };
+		i++;
 	}
-
-	Point points[] = { Vec2(1,2)};
+	Vec2 a = points[1];
+	Vec2 b = points[2];
+	int x = abs((a - b).x);
+	int y = abs((a - b).y);
+	if (y>x)
+	{
+		x = y;
+	}
+	san->setScale(2 *  x/ san->getContentSize().width);
 	PhysicsBody* boxBody = PhysicsBody::createPolygon(points, 3);
 	boxBody->getShape(0)->setRestitution(1.0f);
 	boxBody->getShape(0)->setFriction(0.1f);
