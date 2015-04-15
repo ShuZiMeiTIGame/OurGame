@@ -7,11 +7,11 @@ class StatusLayer :public Layer
 public:
 	virtual bool init();
 	CREATE_FUNC(StatusLayer);
-	void showLevelNumber();
+	void showLevelNumber(int level);
 	void setLevel(int level);
 	void onEnterTransitionDidFinish();
 private:
-	static int _level;
+	int _level;
 	Sprite* numberOfLevel;
 };
 #endif

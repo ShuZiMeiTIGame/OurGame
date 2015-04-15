@@ -14,6 +14,5 @@ private:
 	void menuCallBack_S(Ref* ref);
 	void menuCallBack_A(Ref* ref);
 	void menuCallBack_E(Ref* ref);
-
 };
 #endif

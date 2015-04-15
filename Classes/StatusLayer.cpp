@@ -1,5 +1,4 @@
 #include"StatusLayer.h"
-int StatusLayer::_level = 1;
 bool StatusLayer::init(){
 	if (!Layer::init())
 		return false;
@@ -10,7 +9,7 @@ bool StatusLayer::init(){
 	return true;
 }
 
-void StatusLayer::showLevelNumber(){
+void StatusLayer::showLevelNumber(int level){
 	//获取屏幕大小
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -19,7 +18,7 @@ void StatusLayer::showLevelNumber(){
 		free(numberOfLevel);
 		numberOfLevel = nullptr;
 	}
-	numberOfLevel = Sprite::create(StringUtils::format("number%d.png", _level));
+	numberOfLevel = Sprite::create(StringUtils::format("number%d.png", level));
 	numberOfLevel->setVisible(true);
 	numberOfLevel->setPosition(Vec2(visibleSize.width / 2, visibleSize.height + numberOfLevel->getContentSize().width / 2));
 	auto scale = ScaleTo::create(0.001f, 0);
@@ -27,7 +26,7 @@ void StatusLayer::showLevelNumber(){
 	auto rotate = RotateBy::create(0.6f, 720);
 	auto scaleTo = ScaleTo::create(0.6f, 1.0f);
 	auto spawn = Spawn::create(scale,moveTo, scaleTo, rotate, NULL);
-	auto wait = MoveBy::create(0.9, Vec2::ZERO);
+	auto wait = MoveBy::create(0.9f, Vec2::ZERO);
 	
 	auto fadeout = FadeOut::create(0.6f);
 	auto scaleTo_out = ScaleTo::create(0.6f, 0.2f);
@@ -47,7 +46,7 @@ void StatusLayer::setLevel(int level){
 }
 void StatusLayer::onEnterTransitionDidFinish(){
 	Layer::onEnterTransitionDidFinish();
-	showLevelNumber();
+	//showLevelNumber(_level);
 }
 
 

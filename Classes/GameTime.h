@@ -1,34 +1,26 @@
 #ifndef _GAMETIME_H_
 #define _GAMETIME_H_
 #include"cocos2d.h"
-#include"cocos-ext.h"
-#include"Tollgate.h"
-#include"PhysicsEngine.h"
 #include"BackgroundLayer.h"
+#include"GameLayer.h"
 #include"PaintingLayer.h"
 #include"StatusLayer.h"
 USING_NS_CC;
-using namespace cocos2d::extension;
 
-class GameTime : public Layer
+class GameTime : public Scene
 {
 public:
-	static Scene* createScene();
-	virtual bool init();
-	void onEnter();
-	CREATE_FUNC(GameTime);
-	void loadTollgate(int level);
+	static Scene* create(int level);
+	virtual bool init(int level);
+	void newTollgate(int level);
 	virtual void update(float df);
 private:
-	//当前关卡
 	int _level;
-	//过关处理函数
-	void nextTollgate();
+	GameLayer* gameLayer;
+	StatusLayer* statusLayer;
 	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
 	//求两线段是交点
 	Vec2 getIntersection(Vec2 a,Vec2 b,Vec2 c);
-	int _curLevel;
-	Sprite* ballSprite;
 };
 #endif
