@@ -7,6 +7,9 @@ class Joint : public cocos2d::Layer
 public:
 	void Joint1(Vec2 p);
 	void Joint2(Vec2 p);
+	void Joint3(Vec2 p);
+	void Joint4(Vec2 p,PhysicsWorld*world);
 private:
+	PhysicsWorld *world;
 };
 #endif
