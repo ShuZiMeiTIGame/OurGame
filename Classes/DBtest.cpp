@@ -46,7 +46,7 @@ bool HelloWorld::init()
     DB::sharedDB()->InsertTableDataWithContent(" insert into gamepass( passindex,passstarts,passisunlocked ) values ( 3, 0, 0 ) "); 
     
    // 获取数据  
-   int scores=DB::sharedDB()->GetPlayerInfoScores(" select *  from  playerinfo  where  playername ='default' ");  
+   /*int scores=DB::sharedDB()->GetPlayerInfoScores(" select *  from  playerinfo  where  playername ='default' ");  
    int starts=DB::sharedDB()->GetPassInfoStartsWithIndex(" select *  from  gamepass  where passindex =2 ");
    bool isLocked1=DB::sharedDB()->GetPassInfoIsUnlockedWithIndex(" select *  from  gamepass  where  passindex =1 ");
    bool isLocked3=DB::sharedDB()->GetPassInfoIsUnlockedWithIndex(" select *  from  gamepass  where  passindex =3 ");
@@ -54,7 +54,7 @@ bool HelloWorld::init()
 
    CCLOG("= %d =",starts);
    (isLocked1==true)?( CCLOG("= has unlock =")):(CCLOG("= is locked ="));
-   (isLocked3==true)?( CCLOG("= has unlock =")):(CCLOG("= is locked ="));
+   (isLocked3==true)?( CCLOG("= has unlock =")):(CCLOG("= is locked ="));*/
  
 
 

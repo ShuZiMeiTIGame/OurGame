@@ -13,7 +13,6 @@ public:
 	~DB();
 
 	static DB* sharedDB();
-#include "Tollgate.h"
 
 	sqlite3 *pDB;//数据库指针         
 	std::string sqlstr;//SQL指令    

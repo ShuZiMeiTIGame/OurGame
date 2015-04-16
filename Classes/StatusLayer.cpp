@@ -6,6 +6,8 @@ bool StatusLayer::init(){
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	numberOfLevel = nullptr;
+	//注册观察者事件来响应关卡动画播放事件
+	NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(StatusLayer::observerCallFunc), "showTollgateNumber", NULL);
 	return true;
 }
 
@@ -15,7 +17,7 @@ void StatusLayer::showLevelNumber(int level){
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	if (numberOfLevel != nullptr){
 		numberOfLevel->removeFromParentAndCleanup(true);
-		free(numberOfLevel);
+		//free(numberOfLevel);
 		numberOfLevel = nullptr;
 	}
 	numberOfLevel = Sprite::create(StringUtils::format("number%d.png", level));
@@ -46,7 +48,11 @@ void StatusLayer::setLevel(int level){
 }
 void StatusLayer::onEnterTransitionDidFinish(){
 	Layer::onEnterTransitionDidFinish();
-	//showLevelNumber(_level);
+	showLevelNumber(_level);
 }
+void StatusLayer::observerCallFunc(Ref* level){
+	showLevelNumber((int)level);
+}
+
 
 

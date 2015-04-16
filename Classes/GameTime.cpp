@@ -1,7 +1,9 @@
 #include"GameTime.h"
 Scene* GameTime::create(int level){
 	auto scene = new GameTime();
+	
 	if (scene && scene->initWithPhysics() && scene->init(level)){
+		
 		scene->autorelease();
 		return scene;
 	}
@@ -14,11 +16,11 @@ Scene* GameTime::create(int level){
 bool GameTime::init(int level){
 	if (!Scene::init())
 		return false;
+	getPhysicsWorld()->setGravity(Vect(0, -980));
+	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//获取屏幕大小
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	getPhysicsWorld()->setGravity(Vect(0, -980));
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//调用myUpdate函数判定ball是否到达相应位置
 	_level = level;
 	//背景层
@@ -26,14 +28,15 @@ bool GameTime::init(int level){
 	//游戏层
 	gameLayer = GameLayer::create();
 	//绘画层
-	auto paintingLayer = PaintingLayer::create();
+	paintingLayer = PaintingLayer::create();
 	//状态层
 	statusLayer = StatusLayer::create();
 	statusLayer->setLevel(_level);
 	gameLayer->setLevel(_level, statusLayer);
-
-	addChild(bgLayer, 1);
-	addChild(gameLayer, 5);
+	gameLayer->setPhysicsWorld(this->getPhysicsWorld());
+	gameLayer->loadTollgate(level);
+	//addChild(bgLayer, 1);
+	addChild(gameLayer, 2);
 	addChild(paintingLayer, 3);
 	addChild(statusLayer, 4);
 	return true;
@@ -60,9 +63,16 @@ Vec2 GameTime::getIntersection(Vec2 a, Vec2 b, Vec2 c){
 }
 void GameTime::newTollgate(int level){
 	this->removeChild(gameLayer, true);
+	this->removeChild(paintingLayer, true);
+	paintingLayer = PaintingLayer::create();
 	gameLayer = GameLayer::create();
 	gameLayer->setLevel(level, statusLayer);
+	gameLayer->setPhysicsWorld(this->getPhysicsWorld());
+	gameLayer->loadTollgate(level);
+	//发送消息给StatusLayer来播放关卡数动画
+	NotificationCenter::getInstance()->postNotification("showTollgateNumber", (Ref*)_level);
 	this->addChild(gameLayer, 2);
+	this->addChild(paintingLayer, 3);
 }
 void GameTime::update(float df){
 	//MessageBox("f", "f");
@@ -70,7 +80,7 @@ void GameTime::update(float df){
 	auto ballPos = gameLayer->getBallPos();
 	auto winSize = Director::getInstance()->getWinSize();
 	if (abs(ballPos.x - winSize.width) < 200 && abs(ballPos.y - winSize.height) < 8000){
-		if (_level < 2) _level++;
+		if (_level < 10) _level++;
 		newTollgate(_level);
 		CCLOG("newTollgate------%d", _level);
 	}

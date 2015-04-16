@@ -18,6 +18,7 @@ private:
 	int _level;
 	GameLayer* gameLayer;
 	StatusLayer* statusLayer;
+	PaintingLayer* paintingLayer;
 	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
 	//求两线段是交点

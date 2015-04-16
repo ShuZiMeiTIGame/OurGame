@@ -13,5 +13,6 @@ public:
 private:
 	int _level;
 	Sprite* numberOfLevel;
+	void observerCallFunc(Ref* level);
 };
 #endif
