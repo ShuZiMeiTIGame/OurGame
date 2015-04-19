@@ -1,6 +1,6 @@
 #include"Joint.h"
 
-void Joint::Joint1(Vec2 p)
+void Joint::Joint1(Vec2 p, PhysicsWorld*world)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -26,7 +26,7 @@ void Joint::Joint1(Vec2 p)
 	ballCBody->getShape(0)->setFriction(0.5f);
 	ballC->setPhysicsBody(ballCBody);
 	addChild(ballC, 1);
-	auto world = this->getScene()->getPhysicsWorld();
+	//auto world = this->getScene()->getPhysicsWorld();
 	PhysicsJointDistance *joint1 = PhysicsJointDistance::construct(sanABody, ballBBody,
 		Vec2(0, -sanA->getContentSize().height / 2), Vec2(0, 0));
 	PhysicsJointDistance *joint2 = PhysicsJointDistance::construct(sanABody, ballCBody,
@@ -42,7 +42,7 @@ void Joint::Joint1(Vec2 p)
 
 }
 
-void Joint::Joint2(Vec2 a)
+void Joint::Joint2(Vec2 a, PhysicsWorld*world)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -106,7 +106,7 @@ void Joint::Joint2(Vec2 a)
 	boxABody->getShape(0)->setRestitution(0);
 
 
-	auto world = this->getScene()->getPhysicsWorld();
+//	auto world = this->getScene()->getPhysicsWorld();
 	PhysicsJointLimit*joint1 = PhysicsJointLimit::construct(boxABody, boxBBody,
 		Vec2(25, 0), Vec2(-25, 0), 1, 1);
 	PhysicsJointLimit  *joint2 = PhysicsJointLimit::construct(boxBBody, boxCBody,
@@ -124,7 +124,7 @@ void Joint::Joint2(Vec2 a)
 	world->addJoint(joint5);
 }
 
-void Joint::Joint3(Vec2 p)
+void Joint::Joint3(Vec2 p, PhysicsWorld*world)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -145,7 +145,7 @@ void Joint::Joint3(Vec2 p)
 	boxB->setPhysicsBody(boxBBody);
 	addChild(boxB, 1);
 
-	auto world = this->getScene()->getPhysicsWorld();
+//	auto world = this->getScene()->getPhysicsWorld();
 	PhysicsJointDistance*joint = PhysicsJointDistance::construct(sanABody, boxBBody,
 		Vec2(0, sanA->getContentSize().height / 2), Vec2(0, -boxB->getContentSize().height / 2));
 	world->addJoint(joint);
