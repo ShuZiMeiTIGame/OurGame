@@ -103,8 +103,7 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	sanBody->getShape(0)->setRestitution(0);
 	sanBody->getShape(0)->setFriction(1.0f);
 	//sanBody->setGravityEnable(false);
-	sanBody->getShape(0)->setDensity(0.0f);
-	sanBody->getShape(0)->setMass(200);
+	sanBody->getShape(0)->setDensity(0.5f);
 	/*auto san = Sprite::create();
 	san->setPosition(a);
 	san->setPhysicsBody(sanBody);*/
