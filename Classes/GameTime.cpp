@@ -38,6 +38,7 @@ bool GameTime::init(int level){
 	addChild(gameLayer, 2);
 	addChild(paintingLayer, 3);
 	addChild(statusLayer, 4);
+	NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(GameTime::rePlayCallFunc), "RePlay", NULL);
 	return true;
 }
 
@@ -84,4 +85,7 @@ void GameTime::update(float df){
 		newTollgate(_level);
 		CCLOG("newTollgate------%d", _level);
 	}
+}
+void GameTime::rePlayCallFunc(Ref* ref){
+	newTollgate(_level);
 }

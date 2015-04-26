@@ -14,6 +14,7 @@ public:
 	virtual bool init(int level);
 	void newTollgate(int level);
 	virtual void update(float df);
+	void rePlayCallFunc(Ref* ref);
 private:
 	int _level;
 	GameLayer* gameLayer;

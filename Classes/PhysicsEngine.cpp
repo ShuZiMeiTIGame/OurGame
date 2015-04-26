@@ -1,18 +1,18 @@
 #include"PhysicsEngine.h"
-Sprite*PhysicsWor::addWall(Vec2 p)
-{
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	auto wall = Sprite::create("2.png");
-	wall->setPosition(p.x, p.y);
-	Point points[3] = { Point(-80.00000, -20.00000), Point(80.00000, 20.00000), Point(80.00000, -20.00000) };
-	PhysicsBody* boxBody = PhysicsBody::createPolygon(points, 3);
-	boxBody->getShape(0)->setRestitution(0.0f);
-	boxBody->getShape(0)->setFriction(0.5f);
-	boxBody->getShape(0)->setDensity(7.0f);
-	boxBody->setGravityEnable(true);
-	wall->setPhysicsBody(boxBody);
-	return wall;
-}
+//Sprite*PhysicsWor::addWall(Vec2 p)
+//{
+//	Size visibleSize = Director::getInstance()->getVisibleSize();
+//	auto wall = Sprite::create("2.png");
+//	wall->setPosition(p.x, p.y);
+//	Point points[3] = { Point(-80.00000, -20.00000), Point(80.00000, 20.00000), Point(80.00000, -20.00000) };
+//	PhysicsBody* boxBody = PhysicsBody::createPolygon(points, 3);
+//	boxBody->getShape(0)->setRestitution(0.0f);
+//	boxBody->getShape(0)->setFriction(0.5f);
+//	boxBody->getShape(0)->setDensity(7.0f);
+//	boxBody->setGravityEnable(true);
+//	wall->setPhysicsBody(boxBody);
+//	return wall;
+//}
 
 Sprite*PhysicsWor::addBall(Vec2 a, Vec2 b, int c)
 {
@@ -30,12 +30,12 @@ Sprite*PhysicsWor::addBall(Vec2 a, Vec2 b, int c)
 	return ball;
 }
 
-Sprite*PhysicsWor::addBall(Vec2 a, int b)
+DrawNode* PhysicsWor::addBall(Vec2 a, int b)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	auto ball = Sprite::create("CloseNormal.png");
+	auto ball = DrawNode::create();
+	ball->drawDot(Vec2::ZERO, b, Color4F(1, 1, 1, 1));
 	ball->setPosition(a);
-	ball->setScale(2 * b / ball->getContentSize().width);
 	PhysicsBody* ballBody = PhysicsBody::createCircle(b, PHYSICSBODY_MATERIAL_DEFAULT);
 	ballBody->getShape(0)->setFriction(0.5f);
 	ballBody->getShape(0)->setDensity(0.1f);
@@ -60,15 +60,10 @@ Sprite* PhysicsWor::addBox(Vec2 a, Vec2 b, float c)
 	return box;
 }
 
-Sprite*PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
+DrawNode* PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-<<<<<<< HEAD
-	auto san = Sprite::create("3.png");
-	san->setPosition(a);
-=======
->>>>>>> origin/master
 	Point points[3];
 	int j = 0;
 	auto i = pos->begin();
@@ -103,18 +98,17 @@ Sprite*PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	//Vec2 poi[3] = { b1, b2, b3 };
 	//setPhysics会重新设置锚点  --!!
 	Vec2 poi[3] = { a1, a2, a3 };
-	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, 3);
+	PhysicsBody* sanBody = PhysicsBody::createPolygon(poi, 3);
 	sanBody->getShape(0)->setRestitution(0);
 	sanBody->getShape(0)->setFriction(0.1f);
-	sanBody->getShape(0)->setDensity(0.3f);
-	auto san = Sprite::create("3.png");
-	san->setPosition(a);
-	san->setPhysicsBody(sanBody);
-	return san;
+	sanBody->getShape(0)->setDensity(0.1f);
 
-	//DrawNode* draw = DrawNode::create();
-	//draw->drawTriangle(a1, a2,a3,Color4F(1, 1, 1, 1));
-	//this->addChild(draw, 1);
-	//draw->setPhysicsBody(b2);
+	DrawNode* draw = DrawNode::create();
+	draw->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	draw->setPosition(Vec2::ZERO);
+	draw->drawTriangle(a1, a2, a3, Color4F(1, 1, 1, 1));
+	draw->setPhysicsBody(sanBody);
+	log("ContentSize %f,%f", draw->getContentSize().width, draw->getContentSize().height);
+	return draw;
 	//这个添加到三角形下面就好 b2是那个b2 = triangle->getPhysicsBody();
 }

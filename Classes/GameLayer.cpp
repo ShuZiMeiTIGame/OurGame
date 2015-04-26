@@ -82,13 +82,11 @@ void GameLayer::loadTollgate(int level){
 			addChild(edgeSprite);
 		}
 		else if (type == TollgateBody::CIRCLE){
-
+			auto circle = PhysicsWor::addBall((*j)->getPosition(), (*j)->getRadius());
+			addChild(circle);
 		}
 		else if (type == TollgateBody::TRIANGLE){
 			auto triangle = PhysicsWor::addSan((*j)->getPosition(), (*j)->getPosArray());
-			auto mySprite = Sprite::create();
-			//mySprite->setTexture(Texture2D::initWithImage(Image::))
-			b2 = triangle->getPhysicsBody();
 			addChild(triangle);
 		}
 		j++;
@@ -113,7 +111,7 @@ Vec2 GameLayer::getBallPos(){
 void GameLayer::update(float t){
 	Layer::update(t);
 }
-Sprite* GameLayer::getBall(){
+DrawNode* GameLayer::getBall(){
 	return ballSprite;
 }
 void GameLayer::setPhysicsWorld(PhysicsWorld* world){

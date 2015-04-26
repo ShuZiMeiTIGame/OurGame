@@ -2,6 +2,7 @@
 #define _PAINTINGLAYER_H_
 #include"cocos2d.h"
 #include"cocos-ext.h"
+#include "PhysicsEngine.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
 class PaintingLayer :public Layer
@@ -25,6 +26,7 @@ private:
 	bool isBox;
 	bool isTriangle;
 	bool isPolygon;
+	bool isCircle;
 	std::vector<Vec2> pointArray;
 };
 #endif

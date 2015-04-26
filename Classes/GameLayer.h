@@ -19,11 +19,11 @@ public:
 	int getLevel();
 	void loadTollgate(int level);
 	virtual void update(float t);
-	Sprite* getBall();
+	DrawNode* getBall();
 	void setPhysicsWorld(PhysicsWorld*);
 private:
 	int _level;
-	Sprite* ballSprite;
+	DrawNode* ballSprite;
 	StatusLayer* statusLayer;
 	PhysicsWorld* _phyWorld;
 };

@@ -331,9 +331,6 @@ bool InFoExec::SaveAllInfo(int Clasification,int Id,std::vector <float> &info)
 }
 
 
-
-
-
 Tollgate* InFoExec::Getlevelinfo(int ID)
 { 
 	if(DB::sharedDB()->OpenDBWithFileName("hahaha.db"))

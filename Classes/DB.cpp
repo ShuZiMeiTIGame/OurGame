@@ -357,16 +357,10 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 			{
 				pos.x=sqlite3_column_double(statement,3);
 				pos.y=sqlite3_column_double(statement,4);
-
-
-
 				radius=sqlite3_column_double(statement,5)  ;
 
 				auto bodyptr=TollgateBody::createTollgateCircle(Classifiaction,pos,radius);
 				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
-
-
-
 
 			}				
 

@@ -11,6 +11,7 @@ bool PaintingLayer::init(){
 	isTriangle = false;
 	isPolygon = false;
 	isBox = false;
+	isCircle = false;
 	//初始化坐标
 	pre_point = cur_point = Vec2::ZERO;
 	//创建DrawNode
@@ -20,6 +21,11 @@ bool PaintingLayer::init(){
 	auto label = MenuItemFont::create("setPositon", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
 	label->setTag(0);
 	label->setPosition(Vec2(0, -100));
+
+	auto circle = MenuItemFont::create("Circle", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
+	circle->setTag(5);
+	circle->setPosition(Vec2(0, -150));
+
 	auto tranLabel = MenuItemFont::create("Triangle", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
 	tranLabel->setTag(1);
 	tranLabel->setPosition(Vec2(0, -50));
@@ -30,7 +36,12 @@ bool PaintingLayer::init(){
 	PolygonLabel->setTag(3);
 	PolygonLabel->setPosition(Vec2(0, 50));
 
-	auto menu = Menu::create(label, tranLabel, BoxLabel, PolygonLabel, NULL);
+	auto rePlay = MenuItemFont::create("RePlay", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
+	rePlay->setTag(4);
+	rePlay->setPosition(Vec2(0, -200));
+
+
+	auto menu = Menu::create(label, tranLabel, BoxLabel, PolygonLabel, rePlay, circle,NULL);
 	menu->setPosition(Vec2(100, visibleSize.height - 100));
 	addChild(menu);
 	auto listener = EventListenerTouchOneByOne::create();
@@ -47,25 +58,26 @@ bool PaintingLayer::OnTouchBegan(Touch* touch, Event* event_){
 		//ballSprite->setPosition(cur_point);
 		isSetPosition = false;
 	}
-	if (isPolygon){
-		pointArray.push_back(cur_point);
-		//判断直线是否相交
-		/*if (pointArray.size() >= 2){
-		for (auto i = pointArray.end() - 1; i != pointArray.begin() - 1; i--){
-		i, i - 1;
-		}
-		}*/
-	}
-	if (isTriangle){
-		pointArray.push_back(cur_point);
-	}
+	//if (isPolygon){
+	//	pointArray.push_back(cur_point);
+	//	//判断直线是否相交
+	//	/*if (pointArray.size() >= 2){
+	//	for (auto i = pointArray.end() - 1; i != pointArray.begin() - 1; i--){
+	//	i, i - 1;
+	//	}
+	//	}*/
+	//}
+	//if (isTriangle){
+	//	pointArray.push_back(cur_point);
+	//}
+	pointArray.push_back(cur_point);
 	return true;
 }
 void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 	cur_point = touch->getLocation();
 	if (isBox)
 		drawNode->clear();
-	if (isPolygon || isTriangle){
+	if (isPolygon || isTriangle || isCircle){
 		if (pointArray.size() == 1){
 			pointArray.push_back(cur_point);
 		}
@@ -134,12 +146,21 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 		}
 
 	}
+	if (isCircle){
+		int r = (pointArray[0].x - pointArray[1].x)/ 2;
+		Vec2 center(std::max(pointArray[0].x, pointArray[1].x)-r, std::max(pointArray[0].y, pointArray[1].y)-r);
+		addChild(PhysicsWor::addBall(center, r));
+	}
+	pointArray.clear();
+	drawNode->clear();
 	//清空坐标停止绘制
 	pre_point = cur_point = Vec2::ZERO;
 }
 void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t flags){
 	//DrawPrimitives::setDrawColor4B(3, 171, 174, 255);//看不见
 	//glLineWidth(2.0f);
+	if (pointArray.size() < 2)
+		return;
 	Color4F color = Color4F(Color4B(3,171,174,255));
 	if (isTriangle && pointArray.size() > 1){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
@@ -163,12 +184,18 @@ void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t fla
 			drawNode->drawSegment(*i, *(i + 1), 2, color);
 		}
 	}
+	else if (isCircle){
+		int r = (pointArray[0].x - pointArray[1].x) / 2;
+		Vec2 center(std::max(pointArray[0].x, pointArray[1].x) - r, std::max(pointArray[0].y, pointArray[1].y) - r);
+		drawNode->drawDot(center, r,Color4F(1, 1, 1, 1));
+	}
 }
 void PaintingLayer::OnMenuClicked(Ref* ref){
 	isSetPosition = false;
 	isTriangle = false;
 	isPolygon = false;
 	isBox = false;
+	isCircle = false;
 	int tag = ((MenuItemFont*)ref)->getTag();
 	switch (tag)
 	{
@@ -183,6 +210,13 @@ void PaintingLayer::OnMenuClicked(Ref* ref){
 		break;
 	case 3:
 		isPolygon = true;
+		break;
+	case 4:
+		NotificationCenter::getInstance()->postNotification("RePlay");
+		break;
+	case 5:
+		isCircle = true;
+		break;
 	default:
 		break;
 	}
