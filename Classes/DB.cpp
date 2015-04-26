@@ -306,7 +306,7 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 		while(sqlite3_step(statement) == SQLITE_ROW) 
 		{   
 			int LevelID=sqlite3_column_int(statement,1)	 ;
-			float Classifiaction= sqlite3_column_double(statement,2	);
+			float Classifiaction= sqlite3_column_double(statement,2);
 			if(Classifiaction==1.0)
 			{	      
 				pos.x=sqlite3_column_double(statement,3);

@@ -1,9 +1,7 @@
 #include"GameTime.h"
 Scene* GameTime::create(int level){
 	auto scene = new GameTime();
-	
 	if (scene && scene->initWithPhysics() && scene->init(level)){
-		
 		scene->autorelease();
 		return scene;
 	}
@@ -16,6 +14,7 @@ Scene* GameTime::create(int level){
 bool GameTime::init(int level){
 	if (!Scene::init())
 		return false;
+	getPhysicsWorld()->setAutoStep(false);
 	getPhysicsWorld()->setGravity(Vect(0, -980));
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//获取屏幕大小
@@ -77,6 +76,7 @@ void GameTime::newTollgate(int level){
 void GameTime::update(float df){
 	//MessageBox("f", "f");
 	Scene::update(df);
+	getPhysicsWorld()->step(0.02f);
 	auto ballPos = gameLayer->getBallPos();
 	auto winSize = Director::getInstance()->getWinSize();
 	if (abs(ballPos.x - winSize.width) < 200 && abs(ballPos.y - winSize.height) < 8000){

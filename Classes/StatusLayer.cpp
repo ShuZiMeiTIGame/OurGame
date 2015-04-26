@@ -10,7 +10,6 @@ bool StatusLayer::init(){
 	NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(StatusLayer::observerCallFunc), "showTollgateNumber", NULL);
 	return true;
 }
-
 void StatusLayer::showLevelNumber(int level){
 	//获取屏幕大小
 	Size visibleSize = Director::getInstance()->getVisibleSize();

@@ -5,6 +5,7 @@
 #include"PhysicsEngine.h"
 #include"cocos-ext.h"
 #include"StatusLayer.h"
+#include"InFoExec.h"
 using namespace cocos2d::extension;
 USING_NS_CC;
 class GameTime;

@@ -65,7 +65,6 @@ Sprite*PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	auto san = Sprite::create("3.png");
-//<<<<<<< HEAD
 	san->setPosition(a);
 	Point points[3];
 	int j = 0;
