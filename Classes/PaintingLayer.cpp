@@ -185,9 +185,10 @@ void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t fla
 		}
 	}
 	else if (isCircle){
-		int r = (pointArray[0].x - pointArray[1].x) / 2;
+		int r = std::min(abs(pointArray[0].x - pointArray[1].x) / 2, abs(pointArray[0].y - pointArray[1].y) / 2);
 		Vec2 center(std::max(pointArray[0].x, pointArray[1].x) - r, std::max(pointArray[0].y, pointArray[1].y) - r);
 		drawNode->drawDot(center, r,Color4F(1, 1, 1, 1));
+	
 	}
 }
 void PaintingLayer::OnMenuClicked(Ref* ref){
