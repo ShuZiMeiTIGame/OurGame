@@ -5,11 +5,15 @@ USING_NS_CC;
 class PhysicsWor :cocos2d::Layer
 {
 public:
+	static DrawNode*addSan(Vec2 a, std::vector<Vec2>* pos);//画三角形
+	static DrawNode*addBox(Vec2 a, Vec2 b, float c);//画矩形
+	static DrawNode*addBall(Vec2 p, int r, int c);//画圆//画圆
 
-	static DrawNode* addSan(Vec2 a, std::vector<Vec2>* pos);//std::vector<Vec2>* pos
-	static Sprite*addBox(Vec2 a, Vec2 b, float c);//画矩形
-	static Sprite*addBall(Vec2 a, Vec2 b, int c);//画圆
-	static DrawNode* addBall(Vec2 a, int b);//猪脚球
+	void Joint1(Vec2 p, Vec2 s, PhysicsWorld*world);//小车	//p 中点 s长方形的长宽 r圆半径
+	void Joint3(Vec2 p, PhysicsWorld*world);//跷跷板 。。。
+	void Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2, PhysicsWorld*world);//弹簧吧 可能/c密度
+	void Joint6(Vec2 p, Vec2 o, PhysicsWorld*world, int r);//旋转的长方形//p 中点 s长方形的长宽
+
 private:
 	Layer* _layer;
 	PhysicsWorld* _world;
