@@ -147,7 +147,7 @@ void PhysicsWor::Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2, Phys
 
 void PhysicsWor::Joint6(Vec2 p, Vec2 o, PhysicsWorld *world, int r)
 {
-	auto a = PhysicsWor::addBall(p, r, c);
+	auto a = PhysicsWor::addBall(p, r, 5);
 	auto b = PhysicsWor::addBox(p + Vec2(r, r), p + o + Vec2(r, r), 5);
 	auto aBody = a->getPhysicsBody();
 	aBody->setCategoryBitmask(0x0);
