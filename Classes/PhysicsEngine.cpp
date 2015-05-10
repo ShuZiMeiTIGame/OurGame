@@ -141,6 +141,7 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h, Physic
 	Vec2 a2 = points[1];
 	Vec2 a3 = points[2];
 	int t;
+	Vec2 c = (a1 + a2 + a3) / 3;
 	if (a1.y < a2.y)  {
 		t = a1.y, a1.y = a2.y, a2.y = t;
 	}
@@ -150,14 +151,13 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h, Physic
 	if (a1.y < a2.y){
 		t = a1.y, a1.y = a2.y, a2.y = t;
 	}
-	int hi = (a1 - a3).y;
+	int hi = (a1 - c).y;
 	auto a = PhysicsWor::addSan(p, pos);
 	addChild(a, 1);
 	auto aBody = a->getPhysicsBody();
 	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
 	Vec2 box1 = (boxCenter + Vec2(-w / 2, h / 2));
 	Vec2 box2 = (boxCenter + Vec2(w / 2, -h / 2));
-
 	auto b = PhysicsWor::addBox(box1, box2, 0.5);
 	auto bBody = b->getPhysicsBody();
 	addChild(b, 1);
