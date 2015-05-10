@@ -17,16 +17,13 @@ DrawNode*PhysicsWor::addBall(Vec2 p, int r, int c)
 	draw->drawDot(Vec2::ZERO, width, Color4F::WHITE);
 	draw->setPhysicsBody(ballBody);
 	return draw;
-
 }
-
 
 DrawNode* PhysicsWor::addBox(Vec2 a, Vec2 b, float c)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	int width = abs((a - b).x);
 	int height = abs((a - b).y);
-
 	Point boxPoint = Vec2(width, height);
 	PhysicsBody* boxBody = PhysicsBody::createBox(Size(boxPoint));
 	boxBody->getShape(0)->setRestitution(0.0f);
@@ -44,22 +41,22 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point points[3];
+	Vec2 c1 = Vec2(0, 0);
 	int j = 0;
 	auto i = pos->begin();
 	while (i != pos->end()){
+		c1 += *i;
 		points[j++] = *i;
 		i++;
 	}
-	Vec2 a1 = points[0];
-	Vec2 a2 = points[1];
-	Vec2 a3 = points[2];
-	float w = (a3 + a1).x / 2;
-	float h = (a2 + a1).y / 2;
-	Vec2 b2 = Vec2(a2.x - w, a2.y - h);
-	Vec2 b1 = Vec2(a1.x - w, a1.y - h);
-	Vec2 b3 = Vec2(a3.x - w, a3.y - h);
-	Vec2 poi[3] = { b1, b2, b3 };
-	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, 3, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
+	Vec2 c = c1 / j;
+	Point poi[3];
+	for (int i = 0; i < j; i++)
+	{
+		poi[i] = points[i] - c;
+		
+	}
+	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
 	sanBody->getShape(0)->setRestitution(0);
 	sanBody->getShape(0)->setFriction(1.0f);
 	sanBody->getShape(0)->setDensity(0.5f);
@@ -68,7 +65,36 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	draw->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
 	draw->setPhysicsBody(sanBody);
 	return draw;
+}
 
+DrawNode*PhysicsWor::addPolygon(Vec2 p, std::vector<Vec2>* pos)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Point points[20];
+	Vec2 c1 = Vec2(0, 0);
+	int j = 0;
+	auto i = pos->begin();
+	while (i != pos->end()){
+		c1 += *i;
+		points[j++] = *i;
+		i++;
+	}
+	Vec2 c = c1 / j;
+	Point poi[20];
+	for (int i = 0; i < j; i++)
+	{
+		poi[i] = points[i] - c;
+
+	}
+	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
+	sanBody->getShape(0)->setRestitution(0);
+	sanBody->getShape(0)->setFriction(1.0f);
+	sanBody->getShape(0)->setDensity(0.5f);
+	DrawNode* draw = DrawNode::create();
+	draw->setPosition(p);
+	draw->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
+	draw->setPhysicsBody(sanBody);
+	return draw;
 }
 
 void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
@@ -102,30 +128,42 @@ void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
 	world->addJoint(joint4);
 }
 
-void PhysicsWor::Joint3(Vec2 p, PhysicsWorld*world)
+void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h, PhysicsWorld*world)
 {
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto sanA = Sprite::create("3.png");
-	sanA->setPosition(p);
-	Point points[3] = { Point(-29.00000, -25.00000), Point(-1.00000, 28.00000), Point(31.00000, -25.00000) };
-	auto sanABody = PhysicsBody::createPolygon(points, 3);
-	sanABody->setDynamic(false);
-	sanA->setPhysicsBody(sanABody);
-	addChild(sanA, 1);
+	Point points[3];
+	int j = 0;
+	auto i = pos->begin();
+	while (i != pos->end()){
+		points[j++] = *i;
+		i++;
+	}
+	Vec2 a1 = points[0];
+	Vec2 a2 = points[1];
+	Vec2 a3 = points[2];
+	int t;
+	if (a1.y < a2.y)  {
+		t = a1.y, a1.y = a2.y, a2.y = t;
+	}
+	if (a2.y < a3.y) {
+		t = a2.y, a2.y = a3.y, a3.y = t;
+	}
+	if (a1.y < a2.y){
+		t = a1.y, a1.y = a2.y, a2.y = t;
+	}
+	int hi = (a1 - a3).y;
+	auto a = PhysicsWor::addSan(p, pos);
+	addChild(a, 1);
+	auto aBody = a->getPhysicsBody();
+	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
+	Vec2 box1 = (boxCenter + Vec2(-w / 2, h / 2));
+	Vec2 box2 = (boxCenter + Vec2(w / 2, -h / 2));
 
-	auto boxB = Sprite::create("1.png", Rect(p.x, p.y, 300, 20));
-	boxB->setPosition(p + Vec2(0, 44));
-	auto boxBBody = PhysicsBody::createBox(boxB->getContentSize());
-
-	boxBBody->setGravityEnable(true);
-	boxB->setPhysicsBody(boxBBody);
-	addChild(boxB, 1);
-
-	PhysicsJointDistance*joint = PhysicsJointDistance::construct(sanABody, boxBBody,
-		Vec2(0, sanA->getContentSize().height / 2), Vec2(0, -boxB->getContentSize().height / 2));
+	auto b = PhysicsWor::addBox(box1, box2, 0.5);
+	auto bBody = b->getPhysicsBody();
+	addChild(b, 1);
+	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody,
+		Vec2(0, hi), Vec2(0, -b->getContentSize().height / 2));
 	world->addJoint(joint);
-
 }
 
 void PhysicsWor::Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2, PhysicsWorld*world)
