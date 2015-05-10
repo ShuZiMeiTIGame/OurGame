@@ -1,5 +1,4 @@
 #include"PaintingLayer.h"
-
 bool PaintingLayer::init(){
 	if (!Layer::init())
 		return false;
@@ -16,6 +15,7 @@ bool PaintingLayer::init(){
 	pre_point = cur_point = Vec2::ZERO;
 	//创建DrawNode
 	drawNode = DrawNode::create();
+	drawNode->setPosition(Vec2(0, 0));
 	addChild(drawNode,20);
 	//控制菜单
 	auto label = MenuItemFont::create("setPositon", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
@@ -40,8 +40,11 @@ bool PaintingLayer::init(){
 	rePlay->setTag(4);
 	rePlay->setPosition(Vec2(0, -200));
 
+	auto retuLable = MenuItemFont::create("Return", CC_CALLBACK_1(PaintingLayer::OnMenuClicked, this));
+	retuLable->setTag(6);
+	retuLable->setPosition(Vec2(0, -250));
 
-	auto menu = Menu::create(label, tranLabel, BoxLabel, PolygonLabel, rePlay, circle,NULL);
+	auto menu = Menu::create(label, tranLabel, BoxLabel, PolygonLabel, rePlay, circle, retuLable, NULL);
 	menu->setPosition(Vec2(100, visibleSize.height - 100));
 	addChild(menu);
 	auto listener = EventListenerTouchOneByOne::create();
@@ -58,22 +61,11 @@ bool PaintingLayer::OnTouchBegan(Touch* touch, Event* event_){
 		//ballSprite->setPosition(cur_point);
 		isSetPosition = false;
 	}
-	//if (isPolygon){
-	//	pointArray.push_back(cur_point);
-	//	//判断直线是否相交
-	//	/*if (pointArray.size() >= 2){
-	//	for (auto i = pointArray.end() - 1; i != pointArray.begin() - 1; i--){
-	//	i, i - 1;
-	//	}
-	//	}*/
-	//}
-	//if (isTriangle){
-	//	pointArray.push_back(cur_point);
-	//}
 	pointArray.push_back(cur_point);
 	return true;
 }
 void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
+
 	cur_point = touch->getLocation();
 	if (isBox)
 		drawNode->clear();
@@ -89,37 +81,88 @@ void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 	}
 }
 void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
+	const double PI = 3.141592653589793;
+	if (pointArray.size() < 2){
+		pointArray.clear();
+		drawNode->clear();
+		return;
+	}
 	cur_point = touch->getLocation();
 	if (isPolygon && pointArray.size() > 2){
+		Vec2 p0;
 		auto first = pointArray.begin();
 		float xOffSet = abs(pointArray.begin()->x - cur_point.x);
 		float yOffSet = abs(pointArray.begin()->y - cur_point.y);
 		if (xOffSet < 50 && yOffSet < 50){
 			pointArray.pop_back();
-			pointArray.push_back(*first);
-			//创建多边形
-			//Vec2* points = new Vec2[pointArray.size()];
-			//int j = 0;
-			//for (auto i = pointArray.begin(); i <= pointArray.end() - 1; i++){
-			//	points[j++] = *i;
-			//}
-			////{
-			////	points[0] = Vec2(-10, -10);
-			////	points[1] = Vec2(-10, 60);
-			////	points[2] = Vec2(60, 60);
-			////	points[3] = Vec2(60, -10);
-			////}
-			//auto node = Node::create();
-			//auto polygon = PhysicsBody::createPolygon(points, pointArray.size());
-			//node->setPhysicsBody(polygon);
-			//addChild(node);
-			pointArray.clear();
+			//pointArray.push_back(*first);
+			p0 = *pointArray.begin();
+			auto i = pointArray.begin();
+			while (i != pointArray.end()){
+				if (i->y < p0.y)
+					p0 = (*i);
+				else if (i->y == p0.y && i->x < p0.x)
+					p0 = (*i);
+				i++;
+			}
+			int size = pointArray.size();
+			Vec2* tubao = new Vec2[size];
+			tubao[0] = p0;
+			pointArray.erase(std::find(pointArray.begin(), pointArray.end(), p0));
+			//对左边进行相对于p0的逆时针坐标排序
+			for (int j = 1; j < size; j++){
+				std::vector<Vec2>::iterator right;
+				auto i = pointArray.begin();
+				double angle = PI;
+				while (i != pointArray.end()){
+					Vec2 pos = (*i) - p0;
+					double ang = atan(pos.y / pos.x);
+					if (ang < 0)
+						ang = ang + PI;
+					if (ang < angle){
+						angle = ang;
+						right = i;
+					}
+					i++;
+				}
+				tubao[j] = *right;
+				pointArray.erase(right);
+			}
+
 			drawNode->clear();
-			//delete(points);
-			//points = nullptr;
+
+			std::vector<Vec2> valuePos;
+			valuePos.push_back(tubao[0]);
+			valuePos.push_back(tubao[1]);
+			for (int i = 0; i < size - 1; i++){
+				auto end = valuePos.end() - 1;
+				Vec2 p1 = *(end - 1);
+				Vec2 p2 = *(end);
+				Vec2 p3;
+				if (i >= size - 2)
+					 p3 = tubao[0];
+				else
+					 p3 = tubao[i + 2];
+				if (isRight(p1, p2, p3))
+					valuePos.push_back(p3);
+				else{
+					if (valuePos.size() > 1)
+						valuePos.pop_back();
+						i--;
+				}
+
+			}
+			Color4F color = Color4F(Color4B(3, 171, 174, 255));
+			auto begin = valuePos.begin();
+			while (begin != valuePos.end() - 1){
+				drawNode->drawSegment(*begin,*(begin+1),2,color);
+				begin++;
+			}
+			drawNode->drawSegment(*valuePos.begin(), *(valuePos.end() - 1), 2, color);
+			//PhysicsWor::ad
+			pointArray.clear();
 		}
 	}
-
 	if (isBox){
 		drawNode->clear();
 		int width = abs((cur_point - pre_point).x);
@@ -136,7 +179,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 		edgeSprite->setPhysicsBody(body2);
 		addChild(edgeSprite);
 		pointArray.clear();
-
 	}
 	if (isTriangle){
 		if (pointArray.size() == 3){
@@ -147,12 +189,20 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 
 	}
 	if (isCircle){
-		int r = (pointArray[0].x - pointArray[1].x)/ 2;
-		Vec2 center(std::max(pointArray[0].x, pointArray[1].x)-r, std::max(pointArray[0].y, pointArray[1].y)-r);
-		addChild(PhysicsWor::addBall(center, r));
+		//int r = std::abs(pointArray[0].x - pointArray[1].x)/ 2;
+		Vec2 center(Vec2::ZERO);
+		int r = std::min(abs(pointArray[0].x - pointArray[1].x) / 2, abs(pointArray[0].y - pointArray[1].y) / 2);
+		if (pointArray[0].x < pointArray[1].x)
+			center = Vec2(pointArray[0].x + r, pointArray[0].y - r);
+		else
+			center = Vec2(pointArray[0].x - r, pointArray[0].y + r);
+		if (!center.equals(Vec2::ZERO))
+			addChild(PhysicsWor::addBall(center, r));
 	}
-	pointArray.clear();
-	drawNode->clear();
+	if (!isPolygon){
+		pointArray.clear();
+		drawNode->clear();
+	}
 	//清空坐标停止绘制
 	pre_point = cur_point = Vec2::ZERO;
 }
@@ -162,7 +212,7 @@ void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t fla
 	if (pointArray.size() < 2)
 		return;
 	Color4F color = Color4F(Color4B(3,171,174,255));
-	if (isTriangle && pointArray.size() > 1){
+	if (isTriangle){
 		for (auto i = pointArray.begin(); i != pointArray.end() - 1; i++){
 			//DrawPrimitives::drawLine(*i, *(i + 1));
 			drawNode->drawSegment(*i, *(i + 1), 2, color);
@@ -185,10 +235,13 @@ void PaintingLayer::draw(Renderer *renderer, const Mat4& transform, uint32_t fla
 		}
 	}
 	else if (isCircle){
+		Vec2 center;
 		int r = std::min(abs(pointArray[0].x - pointArray[1].x) / 2, abs(pointArray[0].y - pointArray[1].y) / 2);
-		Vec2 center(std::max(pointArray[0].x, pointArray[1].x) - r, std::max(pointArray[0].y, pointArray[1].y) - r);
+		if (pointArray[0].x < pointArray[1].x)
+			center = Vec2(pointArray[0].x + r, pointArray[0].y - r);
+		else
+			center = Vec2(pointArray[0].x - r, pointArray[0].y + r);
 		drawNode->drawDot(center, r,Color4F(1, 1, 1, 1));
-	
 	}
 }
 void PaintingLayer::OnMenuClicked(Ref* ref){
@@ -218,7 +271,18 @@ void PaintingLayer::OnMenuClicked(Ref* ref){
 	case 5:
 		isCircle = true;
 		break;
+	case 6:
+		//Director::getInstance()->replaceScene(StartScene::createScene());
+		break;
 	default:
 		break;
 	}
 }
+bool PaintingLayer::isRight(Vec2 p1, Vec2 p2, Vec2 p3){
+	Vec2 a = p2 - p1;
+	Vec2 b = p3 - p1;
+	if ((a.x * b.y - a.y * b.x) > 0)
+		return true;
+	return false;
+}
+

@@ -3,10 +3,9 @@
 #include"cocos2d.h"
 #include"BackgroundLayer.h"
 #include"GameLayer.h"
-#include"PaintingLayer.h"
 #include"StatusLayer.h"
+#include"PaintingLayer.h"
 USING_NS_CC;
-
 class GameTime : public Scene
 {
 public:
@@ -17,9 +16,9 @@ public:
 	void rePlayCallFunc(Ref* ref);
 private:
 	int _level;
+	PaintingLayer* paintingLayer;
 	GameLayer* gameLayer;
 	StatusLayer* statusLayer;
-	PaintingLayer* paintingLayer;
 	//多边形处理函数f
 	void polyPointsProcessor(std::vector<Vec2>* points);
 	//求两线段是交点

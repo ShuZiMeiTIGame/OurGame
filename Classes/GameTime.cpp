@@ -60,6 +60,7 @@ Vec2 GameTime::getIntersection(Vec2 a, Vec2 b, Vec2 c){
 	if (intersection.y > std::max(c.y, b.y) || intersection.y < std::max(c.y, b.y))
 		return Vec2::ZERO;
 	intersection.x = intersection.y;
+	return Vec2::ZERO;
 }
 void GameTime::newTollgate(int level){
 	this->removeChild(gameLayer, true);
