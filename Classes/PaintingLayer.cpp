@@ -130,7 +130,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 			}
 
 			drawNode->clear();
-
 			std::vector<Vec2> valuePos;
 			valuePos.push_back(tubao[0]);
 			valuePos.push_back(tubao[1]);
@@ -150,7 +149,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 						valuePos.pop_back();
 						i--;
 				}
-
 			}
 			Color4F color = Color4F(Color4B(3, 171, 174, 255));
 			auto begin = valuePos.begin();
@@ -159,7 +157,7 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 				begin++;
 			}
 			drawNode->drawSegment(*valuePos.begin(), *(valuePos.end() - 1), 2, color);
-			//PhysicsWor::ad
+			PhysicsWor::addPolygon(Vec2(100, 100), &valuePos);
 			pointArray.clear();
 		}
 	}
@@ -197,7 +195,7 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 		else
 			center = Vec2(pointArray[0].x - r, pointArray[0].y + r);
 		if (!center.equals(Vec2::ZERO))
-			addChild(PhysicsWor::addBall(center, r));
+			addChild(PhysicsWor::addBall(center, r, 1));
 	}
 	if (!isPolygon){
 		pointArray.clear();

@@ -27,7 +27,7 @@ void GameLayer::loadTollgate(int level){
 	//auto tollgate = Tollgate::createTollgate(level, false, Vec2(150, height - 244));
 
 	auto tollgate = InFoExec::GetInStance()->Getlevelinfo(level);
-	ballSprite = PhysicsWor::addBall(tollgate->getBallPostion(), 20);
+	ballSprite = PhysicsWor::addBall(tollgate->getBallPostion(), 20, 1);
 	addChild(ballSprite);
 	auto bodies = tollgate->getbodiesArray();
 
@@ -82,7 +82,7 @@ void GameLayer::loadTollgate(int level){
 			addChild(edgeSprite);
 		}
 		else if (type == TollgateBody::CIRCLE){
-			auto circle = PhysicsWor::addBall((*j)->getPosition(), (*j)->getRadius());
+			auto circle = PhysicsWor::addBall((*j)->getPosition(), (*j)->getRadius(), 1);
 			addChild(circle);
 		}
 		else if (type == TollgateBody::TRIANGLE){
