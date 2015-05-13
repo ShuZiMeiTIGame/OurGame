@@ -6,7 +6,7 @@ class PhysicsWor :cocos2d::Layer
 {
 public:
 	static DrawNode*addBox(Vec2 a, Vec2 b, float c);//»­¾ØÐÎ
-	static DrawNode*addBall(Vec2 p, int r, int c);//»­Ô²
+	static DrawNode*addBall(Vec2 p, int r, float c);//»­Ô²
 	static DrawNode*addSan(Vec2 a, std::vector<Vec2>* pos);//»­Èý½ÇÐÎ
 	static DrawNode*addPolygon(Vec2 p, std::vector<Vec2>*pos);//¶à±ßÐÎ
 

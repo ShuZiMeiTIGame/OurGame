@@ -67,9 +67,14 @@ bool PaintingLayer::OnTouchBegan(Touch* touch, Event* event_){
 void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 
 	cur_point = touch->getLocation();
-	if (isBox)
-		drawNode->clear();
-	if (isPolygon || isTriangle || isCircle){
+	if (isBox);
+	if (isPolygon){
+		auto end = *(pointArray.end() - 1);
+		Vec2 dis = cur_point - end;
+		if (sqrt(dis.x * dis.x + dis.y * dis.y) > 20)
+			pointArray.push_back(cur_point);
+	}
+	if (isTriangle || isCircle){
 		if (pointArray.size() == 1){
 			pointArray.push_back(cur_point);
 		}
@@ -157,7 +162,7 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 				begin++;
 			}
 			drawNode->drawSegment(*valuePos.begin(), *(valuePos.end() - 1), 2, color);
-			PhysicsWor::addPolygon(Vec2(100, 100), &valuePos);
+			//PhysicsWor::addPolygon(Vec2(100, 100), &valuePos);
 			pointArray.clear();
 		}
 	}
