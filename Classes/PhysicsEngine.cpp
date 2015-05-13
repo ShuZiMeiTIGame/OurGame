@@ -111,7 +111,8 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
 	sanBody->getShape(0)->setRestitution(0);
 	sanBody->getShape(0)->setFriction(1.0f);
-	sanBody->getShape(0)->setDensity(0.5f);
+	sanBody->getShape(0)->setDensity(5);
+	
 	/*auto san = Sprite::create();
 	san->setPosition(a);
 	san->setPhysicsBody(sanBody);*/
@@ -126,34 +127,37 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 	return draw;
 }
 
-DrawNode*PhysicsWor::addPolygon(Vec2 p, std::vector<Vec2>* pos)
+DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point points[20];
 	Vec2 c1 = Vec2(0, 0);
 	int j = 0;
-	auto i = pos->end()-1;
-	while (i != pos->begin()-1){
+	auto i = pos->begin();
+	while (i != pos->end()){
 		c1 += *i;
 		points[j++] = *i;
-		i--;
+		i++;
 	}
 	Vec2 c = c1 / j;
 	//int arrL = sizeof(points) / sizeof(points[0]);
+	int q = pos->size();
 	Point poi[20];
 	for (int i = 0; i < j; i++)
 	{
-		poi[i] = points[i] - c;
+		poi[--q] = points[i] - c;
+		
 	}
-	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
-	sanBody->getShape(0)->setRestitution(0);
-	sanBody->getShape(0)->setFriction(1.0f);
-	sanBody->getShape(0)->setDensity(0.5f);
+	//Point poi[4] = { Point(530, 500), Point(380, 600), Point(530, 940), Point(680, 600) };
+	PhysicsBody*polygonBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
+	polygonBody->getShape(0)->setRestitution(0);
+	polygonBody->getShape(0)->setFriction(1.0f);
+	polygonBody->getShape(0)->setDensity(0.5f);
 
 	DrawNode* draw = DrawNode::create();
-	draw->setPosition(p);
-	draw->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
-	draw->setPhysicsBody(sanBody);
+	draw->setPosition(c);
+	draw->drawPolygon(poi, j, Color4F::WHITE, 1, Color4F::WHITE);
+	draw->setPhysicsBody(polygonBody);
 	return draw;
 }
 
