@@ -1,5 +1,12 @@
 #include"PhysicsEngine.h"
 
+Layer*PhysicsWor::_layer = nullptr;
+PhysicsWorld*PhysicsWor::_world = nullptr;
+void PhysicsWor::init(Layer*layer, PhysicsWorld*world){
+	layer = _layer;
+	world = _world;
+}
+
 DrawNode*PhysicsWor::addBall(Vec2 p, int r, float c)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -142,7 +149,7 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 	Vec2 c = c1 / j;
 	//int arrL = sizeof(points) / sizeof(points[0]);
 	int q = pos->size();
-	Point *poi = new Point[q];
+	Point poi[20];
 	for (int i = 0; i < j; i++)
 	{
 		poi[--q] = points[i] - c;
@@ -162,7 +169,6 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 }
 
 //DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
-
 //{
 //	Size visibleSize = Director::getInstance()->getVisibleSize();
 //
@@ -252,7 +258,7 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 //	return san;
 //}
 
-void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
+void PhysicsWor::Joint1(Vec2 p, Vec2 s)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -261,9 +267,9 @@ void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
 		-c->getContentSize().height / 2), 10, 5);
 	auto b = PhysicsWor::addBall(p + Vec2(1 * c->getContentSize().width / 3,
 		-c->getContentSize().height / 2), 10, 5);
-	addChild(a, 1);
-	addChild(b, 1);
-	addChild(c, 1);
+	_layer->addChild(a, 1);
+	_layer->addChild(b, 1);
+	_layer->addChild(c, 1);
 	PhysicsBody* aBody = a->getPhysicsBody();
 	PhysicsBody* bBody = b->getPhysicsBody();
 	PhysicsBody* cBody = c->getPhysicsBody();
@@ -275,10 +281,10 @@ void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
 		Vec2(+c->getContentSize().width / 4, a->getContentSize().height / 2), Vec2(0, 0));
 	PhysicsJointDistance *joint4 = PhysicsJointDistance::construct(cBody, bBody,
 		Vec2(-c->getContentSize().width / 4, b->getContentSize().height / 2), Vec2(0, 0));
-	world->addJoint(joint1);
-	world->addJoint(joint2);
-	world->addJoint(joint3);
-	world->addJoint(joint4);
+	_world->addJoint(joint1);
+	_world->addJoint(joint2);
+	_world->addJoint(joint3);
+	_world->addJoint(joint4);
 }
 
 //void PhysicsWor::Joint3(Vec2 p, PhysicsWorld*world)
@@ -305,7 +311,7 @@ void PhysicsWor::Joint1(Vec2 p, Vec2 s, PhysicsWorld*world)
 //	//	Vec2(0, sanA->getContentSize().height / 2), Vec2(0, -boxB->getContentSize().height / 2));
 //	//world->addJoint(joint);
 
-void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h, PhysicsWorld*world)
+void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h)
 {
 	Point points[3];
 	int j = 0;
@@ -337,13 +343,13 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h, Physic
 	Vec2 box2 = (boxCenter + Vec2(w / 2, -h / 2));
 	auto b = PhysicsWor::addBox(box1, box2, 0.5);
 	auto bBody = b->getPhysicsBody();
-	addChild(b, 1);
+	_layer->addChild(b, 1);
 	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody,
 		Vec2(0, hi), Vec2(0, -b->getContentSize().height / 2));
-	world->addJoint(joint);
+	_world->addJoint(joint);
 }
 
-void PhysicsWor::Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2, PhysicsWorld*world)
+void PhysicsWor::Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2)
 {
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -353,14 +359,14 @@ void PhysicsWor::Joint4(Vec2 p1, Vec2 p2, Vec2 s1, Vec2 s2, int c1, int c2, Phys
 	aBody->setDynamic(false);
 	auto b = PhysicsWor::addBox(p2, p2 + s2, c2);
 	auto bBody = b->getPhysicsBody();
-	addChild(a, 1);
-	addChild(b, 1);
+	_layer->addChild(a, 1);
+	_layer->addChild(b, 1);
 	PhysicsJointSpring  *joint = PhysicsJointSpring::construct(aBody, bBody,
 		Vec2(0, 0), Vec2(0, 0), 400, 10);
-	world->addJoint(joint);
+	_world->addJoint(joint);
 }
 
-void PhysicsWor::Joint6(Vec2 p, Vec2 o, PhysicsWorld *world, int r)
+void PhysicsWor::Joint6(Vec2 p, Vec2 o, int r)
 {
 	auto a = PhysicsWor::addBall(p, r, 5);
 	auto b = PhysicsWor::addBox(p + Vec2(r, r), p + o + Vec2(r, r), 5);
@@ -369,10 +375,10 @@ void PhysicsWor::Joint6(Vec2 p, Vec2 o, PhysicsWorld *world, int r)
 	aBody->setCollisionBitmask(0x0);
 	aBody->setDynamic(false);
 	auto bBody = b->getPhysicsBody();
-	addChild(a, 1);
-	addChild(b, 1);
+	_layer->addChild(a, 1);
+	_layer->addChild(b, 1);
 	PhysicsJointMotor *joint1 = PhysicsJointMotor::construct(aBody, bBody, 3);
 	PhysicsJointPin*joint2 = PhysicsJointPin::construct(aBody, bBody, Vec2(p));
-	world->addJoint(joint1);
-	world->addJoint(joint2);
+	_world->addJoint(joint1);
+	_world->addJoint(joint2);
 }
