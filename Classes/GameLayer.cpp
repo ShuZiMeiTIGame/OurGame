@@ -86,10 +86,12 @@ void GameLayer::loadTollgate(int level){
 			addChild(circle);
 		}
 		else if (type == TollgateBody::TRIANGLE){
-			auto triangle = PhysicsWor::addSan((*j)->getPosition(), (*j)->getPosArray());
+			pointSort((*j)->getPosArray());
+			auto triangle = PhysicsWor::addPolygon((*j)->getPosArray());
 			addChild(triangle);
 		}
 		else if (type == TollgateBody::POLYGON){
+			pointSort((*j)->getPosArray());
 			auto polygon = PhysicsWor::addPolygon((*j)->getPosArray());
 			addChild(polygon);
 		}
@@ -120,4 +122,42 @@ DrawNode* GameLayer::getBall(){
 }
 void GameLayer::setPhysicsWorld(PhysicsWorld* world){
 	_phyWorld = world;
+}
+void GameLayer::pointSort(std::vector<Vec2>* pos){
+	const double PI = 3.141592653589793;
+	Vec2 p0 = *pos->begin();
+	int size = pos->size();
+	std::vector<Vec2> tubao;
+	auto i = pos->begin();
+	int j = 0;
+	while (i != pos->end()){
+		if (i->y < p0.y)
+			p0 = (*i);
+		else if (i->y == p0.y && i->x < p0.x)
+			p0 = (*i);
+		i++;
+		if (i != pos->end())
+			tubao.push_back(*i);
+	}
+	pos->clear();
+	pos->push_back(p0);
+	//对左边进行相对于p0的逆时针坐标排序
+	for (int j = 1; j < size; j++){
+		std::vector<Vec2>::iterator right;
+		auto i = tubao.begin();
+		double angle = PI;
+		while (i != tubao.end()){
+			Vec2 p = (*i) - p0;
+			double ang = atan(p.y / p.x);
+			if (ang < 0)
+				ang = ang + PI;
+			if (ang < angle){
+				angle = ang;
+				right = i;
+			}
+			i++;
+		}
+		pos->push_back(*right);
+		tubao.erase(right);
+	}
 }

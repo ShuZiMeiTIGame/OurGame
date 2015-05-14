@@ -21,6 +21,7 @@ public:
 	virtual void update(float t);
 	DrawNode* getBall();
 	void setPhysicsWorld(PhysicsWorld*);
+	void pointSort(std::vector<Vec2>* pos);
 private:
 	int _level;
 	DrawNode* ballSprite;
