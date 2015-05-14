@@ -61,14 +61,16 @@ void GameLayer::loadTollgate(int level){
 	auto j = bodies->begin();
 	while (j != bodies->end()){
 		int type = (*j)->getType();
-		if (type == TollgateBody::RECT){
+		if (type == TollgateBody::RECT || type == TollgateBody::RECT_S){
 			auto posArray = (*j)->getPosArray();
 			Vec2 cur_point = (*posArray)[1];
 			Vec2 pre_point = (*posArray)[0];
 			int width = abs((cur_point - pre_point).x);
 			int height = abs((cur_point - pre_point).y);
 			auto body2 = PhysicsBody::createBox(Size(width, height));
-				b1 = body2;
+			if (type == TollgateBody::RECT_S)
+				body2->setDynamic(false);
+			b1 = body2;
 			//body2->setMass(2000);
 			//body2->setGravityEnable(true);
 			//body2->getShape(0)->setDensity(0.5f);
@@ -81,20 +83,29 @@ void GameLayer::loadTollgate(int level){
 			edgeSprite->setPhysicsBody(body2);
 			addChild(edgeSprite);
 		}
-		else if (type == TollgateBody::CIRCLE){
+		else if (type == TollgateBody::CIRCLE || type == TollgateBody::CIRCLE_S){
 			auto circle = PhysicsWor::addBall((*j)->getPosition(), (*j)->getRadius(), 1);
+			if (TollgateBody::CIRCLE_S){
+				circle->getPhysicsBody()->setDynamic(false);
+			}
 			addChild(circle);
 		}
-		else if (type == TollgateBody::TRIANGLE){
+		else if (type == TollgateBody::TRIANGLE || type == TollgateBody::TRIANGLE_S){
 			pointSort((*j)->getPosArray());
 			auto triangle = PhysicsWor::addPolygon((*j)->getPosArray());
+			if (TollgateBody::TRIANGLE_S){
+				triangle->getPhysicsBody()->setDynamic(false);
+			}
 			addChild(triangle);
 		}
-		else if (type == TollgateBody::POLYGON){
+		else if (type == TollgateBody::POLYGON || type == TollgateBody::POLYGON_S){
 			auto pos = (*j)->getPosArray();
 			auto p = (*pos);
 			pointSort(pos);
 			auto polygon = PhysicsWor::addPolygon((*j)->getPosArray());
+			if (TollgateBody::POLYGON_S){
+				polygon->getPhysicsBody()->setDynamic(false);
+			}
 			addChild(polygon);
 		}
 		j++;

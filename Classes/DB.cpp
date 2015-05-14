@@ -309,7 +309,7 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 			if (LevelID != ID)
 				continue;
 			float Classifiaction= sqlite3_column_double(statement,2);
-			if(Classifiaction==1.0)
+			if (Classifiaction == 1.0 || Classifiaction == 11.0)
 			{	      
 				pos.x=sqlite3_column_double(statement,3);
 				pos.y=sqlite3_column_double(statement,4);
@@ -330,7 +330,7 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 
 				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
 			}
-			if(Classifiaction==2.0)
+			if (Classifiaction == 2.0 || Classifiaction == 12.0)
 			{
 				pos.x=sqlite3_column_double(statement,3);
 				pos.y=sqlite3_column_double(statement,4);
@@ -351,19 +351,18 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 
 
 			}
-			if(Classifiaction==3.0)
+			if (Classifiaction == 3.0 || Classifiaction == 13.0)
 			{
 				pos.x=sqlite3_column_double(statement,3);
 				pos.y=sqlite3_column_double(statement,4);
 				radius=sqlite3_column_double(statement,5)  ;
-
 				auto bodyptr=TollgateBody::createTollgateCircle(Classifiaction,pos,radius);
 				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
 
 			}				
 
 
-			if(Classifiaction==4.0)
+			if (Classifiaction == 4.0 || Classifiaction == 14.0)
 			{
 				pos.x=sqlite3_column_double(statement,3);
 				pos.y=sqlite3_column_double(statement,4);

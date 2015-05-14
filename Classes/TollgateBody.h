@@ -21,6 +21,12 @@ public:
 	const static int RECT = 2;
 	const static int CIRCLE = 3;
 	const static int POLYGON = 4;
+
+
+	const static int TRIANGLE_S = 11;
+	const static int RECT_S = 12;
+	const static int CIRCLE_S = 13;
+	const static int POLYGON_S = 14;
 private:
 	int _type;
 	int _radius;
