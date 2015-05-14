@@ -34,7 +34,7 @@ bool GameTime::init(int level){
 	gameLayer->setLevel(_level, statusLayer);
 	gameLayer->setPhysicsWorld(this->getPhysicsWorld());
 	gameLayer->loadTollgate(level);
-	addChild(bgLayer, 1);
+	//addChild(bgLayer, 1);
 	addChild(gameLayer, 2);
 	addChild(paintingLayer, 3);
 	addChild(statusLayer, 4);

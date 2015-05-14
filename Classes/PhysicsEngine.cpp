@@ -5,14 +5,6 @@ void PhysicsWor::InitPar(Layer* layer,PhysicsWorld* world){
 	_layer = layer;
 	_world = world;
 }
-
-Layer*PhysicsWor::_layer = nullptr;
-PhysicsWorld*PhysicsWor::_world = nullptr;
-void PhysicsWor::init(Layer*layer, PhysicsWorld*world){
-	layer = _layer;
-	world = _world;
-}
-
 DrawNode*PhysicsWor::addBall(Vec2 p, int r, float c)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -342,7 +334,7 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h)
 	}
 	int hi = (a1 - c).y;
 	auto a = PhysicsWor::addSan(p, pos);
-	addChild(a, 1);
+	_layer->addChild(a, 1);
 	auto aBody = a->getPhysicsBody();
 	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
 	Vec2 box1 = (boxCenter + Vec2(-w / 2, h / 2));
