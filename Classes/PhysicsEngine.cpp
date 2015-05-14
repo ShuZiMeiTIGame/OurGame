@@ -142,7 +142,7 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 	Vec2 c = c1 / j;
 	//int arrL = sizeof(points) / sizeof(points[0]);
 	int q = pos->size();
-	Point poi[20];
+	Point *poi = new Point[q];
 	for (int i = 0; i < j; i++)
 	{
 		poi[--q] = points[i] - c;
@@ -162,6 +162,7 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 }
 
 //DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
+
 //{
 //	Size visibleSize = Director::getInstance()->getVisibleSize();
 //

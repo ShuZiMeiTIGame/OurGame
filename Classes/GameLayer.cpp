@@ -6,7 +6,7 @@ bool GameLayer::init(){
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	//物理边界
-	auto box = PhysicsBody::createEdgeBox(Size(visibleSize.width-50,visibleSize.height-50));
+	auto box = PhysicsBody::createEdgeBox(Size(visibleSize.width,visibleSize.height));
 	//重要
 	box->getShape(0)->setRestitution(0.0f);
 	auto boxNode = Node::create();
@@ -73,7 +73,7 @@ void GameLayer::loadTollgate(int level){
 			//body2->setGravityEnable(true);
 			//body2->getShape(0)->setDensity(0.5f);
 			//body2->getShape(0)->setFriction(0.2f);
-			//body2->getShape(0)->setRestitution(0.1f);
+			//body2->getShape(0)->seetRestitution(0.1f);
 			//body2->setDynamic(false);
 			auto edgeSprite = Scale9Sprite::create("wood.jpg", Rect(pre_point.x, pre_point.y, width, height));
 			edgeSprite->setContentSize(Size(width, height));
@@ -88,6 +88,10 @@ void GameLayer::loadTollgate(int level){
 		else if (type == TollgateBody::TRIANGLE){
 			auto triangle = PhysicsWor::addSan((*j)->getPosition(), (*j)->getPosArray());
 			addChild(triangle);
+		}
+		else if (type == TollgateBody::POLYGON){
+			auto polygon = PhysicsWor::addPolygon((*j)->getPosArray());
+			addChild(polygon);
 		}
 		j++;
 	}

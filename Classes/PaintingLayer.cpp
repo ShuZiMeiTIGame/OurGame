@@ -67,14 +67,13 @@ bool PaintingLayer::OnTouchBegan(Touch* touch, Event* event_){
 void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 
 	cur_point = touch->getLocation();
-	if (isBox);
 	if (isPolygon){
 		auto end = *(pointArray.end() - 1);
 		Vec2 dis = cur_point - end;
-		if (sqrt(dis.x * dis.x + dis.y * dis.y) > 20)
+		if (sqrt(dis.x * dis.x + dis.y * dis.y) > 30)
 			pointArray.push_back(cur_point);
 	}
-	if (isTriangle || isCircle){
+	if (isTriangle || isCircle || isBox){
 		if (pointArray.size() == 1){
 			pointArray.push_back(cur_point);
 		}
@@ -94,6 +93,7 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 	}
 	cur_point = touch->getLocation();
 	if (isPolygon && pointArray.size() > 2){
+		drawNode->clear();
 		Vec2 p0;
 		auto first = pointArray.begin();
 		float xOffSet = abs(pointArray.begin()->x - cur_point.x);
@@ -134,7 +134,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 				pointArray.erase(right);
 			}
 
-			drawNode->clear();
 			std::vector<Vec2> valuePos;
 			valuePos.push_back(tubao[0]);
 			valuePos.push_back(tubao[1]);
@@ -162,12 +161,18 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 				begin++;
 			}
 			drawNode->drawSegment(*valuePos.begin(), *(valuePos.end() - 1), 2, color);
-			//PhysicsWor::addPolygon(Vec2(100, 100), &valuePos);
+			auto lam = [=](){
+				drawNode->clear();
+			};
+			CallFunc* func = CallFunc::create(lam);
+			auto wait = MoveBy::create(0.4f,Vec2::ZERO);
+			auto sequence = Sequence::create(wait,func,NULL);
+			drawNode->runAction(sequence);
+			addChild(PhysicsWor::addPolygon(&valuePos));
 			pointArray.clear();
 		}
 	}
 	if (isBox){
-		drawNode->clear();
 		int width = abs((cur_point - pre_point).x);
 		int height = abs((cur_point - pre_point).y);
 		auto body2 = PhysicsBody::createBox(Size(width, height));
@@ -185,7 +190,8 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 	}
 	if (isTriangle){
 		if (pointArray.size() == 3){
-			//auto triangle = San::addSan();
+			auto triangle = PhysicsWor::addSan(Vec2(100,100),&pointArray);
+			addChild(triangle);
 			pointArray.clear();
 			drawNode->clear();
 		}
@@ -202,7 +208,7 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 		if (!center.equals(Vec2::ZERO))
 			addChild(PhysicsWor::addBall(center, r, 1));
 	}
-	if (!isPolygon){
+	if (!isPolygon && !isTriangle){
 		pointArray.clear();
 		drawNode->clear();
 	}

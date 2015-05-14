@@ -5,11 +5,6 @@ USING_NS_CC;
 class PhysicsWor :cocos2d::Layer
 {
 public:
-<<<<<<< HEAD
-	static DrawNode*addBox(Vec2 a, Vec2 b, float c);//»­¾ØÐÎ
-	static DrawNode*addBall(Vec2 p, int r, float c);//»­Ô²
-=======
->>>>>>> origin/master
 	static DrawNode*addSan(Vec2 a, std::vector<Vec2>* pos);//»­Èý½ÇÐÎ
 	static DrawNode*addBox(Vec2 a, Vec2 b, float c);//»­¾ØÐÎ
 	static DrawNode*addBall(Vec2 p, int r, float c);//»­Ô²
