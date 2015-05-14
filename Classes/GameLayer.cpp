@@ -27,7 +27,6 @@ void GameLayer::loadTollgate(int level){
 	//auto tollgate = Tollgate::createTollgate(level, false, Vec2(150, height - 244));
 	PhysicsWor pw;
 	pw.InitPar(this, _phyWorld);
-	pw.Joint1(Vec2(500, 500), Vec2(300, 100));
 	auto tollgate = InFoExec::GetInStance()->Getlevelinfo(level);
 	ballSprite = PhysicsWor::addBall(tollgate->getBallPostion(), 20, 1);
 	addChild(ballSprite);
