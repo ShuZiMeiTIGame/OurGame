@@ -1,4 +1,10 @@
 #include"PhysicsEngine.h"
+Layer* PhysicsWor::_layer = nullptr;
+PhysicsWorld* PhysicsWor::_world = nullptr;
+void PhysicsWor::InitPar(Layer* layer,PhysicsWorld* world){
+	_layer = layer;
+	_world = world;
+}
 
 Layer*PhysicsWor::_layer = nullptr;
 PhysicsWorld*PhysicsWor::_world = nullptr;

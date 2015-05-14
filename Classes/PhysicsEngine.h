@@ -2,7 +2,7 @@
 #define __PHYSICSWORLD_H__
 #include "cocos2d.h"
 USING_NS_CC;
-class PhysicsWor :cocos2d::Layer
+class PhysicsWor
 {
 public:
 	static DrawNode*addSan(Vec2 a, std::vector<Vec2>* pos);//画三角形
@@ -16,10 +16,17 @@ public:
 	void Joint6(Vec2 p, Vec2 o,  int r);//旋转的长方形//p 中点 s长方形的长宽 r旋转圆半径
 	//static Sprite*addBall(Vec2 a, int b);//猪脚球
 	//static Sprite*addsan(Vec2 a, std::vector<Vec2>*pos);
+<<<<<<< HEAD
 	static void init(Layer*layer, PhysicsWorld*world);
 private:
  static	Layer* _layer;
  static	PhysicsWorld* _world;
+=======
+	static void InitPar(Layer* layer,PhysicsWorld* world);
+private:
+	static Layer* _layer;
+	static PhysicsWorld* _world;
+>>>>>>> origin/master
 };
 
 

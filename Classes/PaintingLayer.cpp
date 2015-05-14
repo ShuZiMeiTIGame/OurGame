@@ -46,7 +46,7 @@ bool PaintingLayer::init(){
 
 	auto menu = Menu::create(label, tranLabel, BoxLabel, PolygonLabel, rePlay, circle, retuLable, NULL);
 	menu->setPosition(Vec2(100, visibleSize.height - 100));
-	addChild(menu);
+	addChild(menu,10);
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(PaintingLayer::OnTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(PaintingLayer::OnTouchMoved, this);
