@@ -91,7 +91,9 @@ void GameLayer::loadTollgate(int level){
 			addChild(triangle);
 		}
 		else if (type == TollgateBody::POLYGON){
-			pointSort((*j)->getPosArray());
+			auto pos = (*j)->getPosArray();
+			auto p = (*pos);
+			pointSort(pos);
 			auto polygon = PhysicsWor::addPolygon((*j)->getPosArray());
 			addChild(polygon);
 		}
@@ -124,6 +126,13 @@ void GameLayer::setPhysicsWorld(PhysicsWorld* world){
 	_phyWorld = world;
 }
 void GameLayer::pointSort(std::vector<Vec2>* pos){
+	auto i1 = pos->begin();
+	for (;i1 != pos->end(); i1++){
+		if ((*i1) == Vec2::ZERO){
+			pos->erase(i1);
+			i1 = pos->begin();
+		}
+	}
 	const double PI = 3.141592653589793;
 	Vec2 p0 = *pos->begin();
 	int size = pos->size();
@@ -135,10 +144,10 @@ void GameLayer::pointSort(std::vector<Vec2>* pos){
 			p0 = (*i);
 		else if (i->y == p0.y && i->x < p0.x)
 			p0 = (*i);
-		i++;
-		if (i != pos->end())
-			tubao.push_back(*i);
+		tubao.push_back(*i);
+		i++;	
 	}
+	tubao.erase(std::find(tubao.begin(), tubao.end(), p0));
 	pos->clear();
 	pos->push_back(p0);
 	//对左边进行相对于p0的逆时针坐标排序

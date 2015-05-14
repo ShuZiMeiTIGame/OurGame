@@ -285,7 +285,7 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 	pos.y=Y;
 	
 	auto Tollgateptr=Tollgate::createTollgate(level,isPassed,pos);
-	std::string dbExecs="select * from pointinfo";
+	std::string dbExecs="select * from pointinfo1 where LeveLID = ";
 	char i_str[10]={0};
 
 	itoa(ID,i_str,10);
@@ -305,7 +305,9 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 
 		while(sqlite3_step(statement) == SQLITE_ROW) 
 		{   
-			int LevelID=sqlite3_column_int(statement,1)	 ;
+			int LevelID=sqlite3_column_int(statement,1);
+			if (LevelID != ID)
+				continue;
 			float Classifiaction= sqlite3_column_double(statement,2);
 			if(Classifiaction==1.0)
 			{	      
@@ -327,10 +329,6 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 				bodyptr->getPosArray()->push_back(point3);
 
 				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
-
-
-
-
 			}
 			if(Classifiaction==2.0)
 			{

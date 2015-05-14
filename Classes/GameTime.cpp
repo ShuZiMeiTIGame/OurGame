@@ -81,7 +81,7 @@ void GameTime::update(float df){
 	getPhysicsWorld()->step(0.02f);
 	auto ballPos = gameLayer->getBallPos();
 	auto winSize = Director::getInstance()->getWinSize();
-	if (abs(ballPos.x - winSize.width) < 200 && abs(ballPos.y - winSize.height) < 8000){
+	if (abs(ballPos.x - winSize.width) < 100 && abs(ballPos.y - winSize.height) < 1000){
 		if (_level < 10) _level++;
 		newTollgate(_level);
 		CCLOG("newTollgate------%d", _level);
