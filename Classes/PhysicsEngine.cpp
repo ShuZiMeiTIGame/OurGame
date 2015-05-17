@@ -139,7 +139,8 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Point points[20];
+	int size = pos->size();
+	Point *points = new Point[size];
 	Vec2 c1 = Vec2(0, 0);
 	int j = 0;
 	auto i = pos->begin();
@@ -151,7 +152,8 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 	Vec2 c = c1 / j;
 	//int arrL = sizeof(points) / sizeof(points[0]);
 	int q = pos->size();
-	Point poi[20];
+	Point *poi = new Point[size];
+	//Point poi[20];
 	for (int i = 0; i < j; i++)
 	{
 		poi[--q] = points[i] - c;
@@ -159,7 +161,7 @@ DrawNode*PhysicsWor::addPolygon( std::vector<Vec2>* pos)
 	}
 	//Point poi[4] = { Point(530, 500), Point(380, 600), Point(530, 940), Point(680, 600) };
 	PhysicsBody*polygonBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
-	polygonBody->getShape(0)->setRestitution(0);
+	polygonBody->getShape(0)->setRestitution(0); 
 	polygonBody->getShape(0)->setFriction(1.0f);
 	polygonBody->getShape(0)->setDensity(0.5f);
 
@@ -312,7 +314,48 @@ void PhysicsWor::Joint1(Vec2 p,  float w, float h,int r)
 //	//	Vec2(0, sanA->getContentSize().height / 2), Vec2(0, -boxB->getContentSize().height / 2));
 //	//world->addJoint(joint);
 
-void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos, float w, float h)
+void PhysicsWor::Joint2(Vec2 p)
+{
+	/*Point points[3];
+	int j = 0;
+	auto i = pos->begin();
+	while (i != pos->end()){
+		points[j++] = *i;
+		i++;
+	}
+	Vec2 a1 = points[0];
+	Vec2 a2 = points[1];
+	Vec2 a3 = points[2];
+	int t;
+	Vec2 c = (a1 + a2 + a3) / 3;
+	if (a1.y < a2.y)  {
+		t = a1.y, a1.y = a2.y, a2.y = t;
+	}
+	if (a2.y < a3.y) {
+		t = a2.y, a2.y = a3.y, a3.y = t;
+	}
+	if (a1.y < a2.y){
+		t = a1.y, a1.y = a2.y, a2.y = t;
+	}
+	int hi = (a1 - c).y;
+	auto a = PhysicsWor::addSan(p, pos);
+	auto aBody = a->getPhysicsBody();*/
+
+	/*auto aBox = PhysicsWor::addBox(p, p + Vec2(350, 30), 5);
+	auto bBox = PhysicsWor::addBox(p, p - Vec2(30, -60), 5);*/
+	auto a = Sprite::create();
+	auto aBody = PhysicsBody::create();
+	Point vert1[4] = { Point(186.00000, 280.00000), Point(131.00000, 236.00000), Point(131.00000, 342.00000), Point(186.00000, 342.00000) };
+	aBody->addShape(PhysicsShapePolygon::create(vert1, 4));
+	Point vert2[4] = { Point(186.00000, 280.00000), Point(676.00000, 280.00000), Point(676.00000, 236.00000), Point(131.00000, 236.00000) };
+	aBody->addShape(PhysicsShapePolygon::create(vert2, 4));
+	a->setPhysicsBody(aBody);
+	a->setPosition(p);
+	_layer->addChild(a, 1);
+
+}
+
+void PhysicsWor::Joint3(Vec2 p, float w, float h,std::vector<Vec2>* pos )
 {
 	Point points[3];
 	int j = 0;
@@ -387,3 +430,11 @@ void PhysicsWor::Joint6(Vec2 p, float w,float h, float r,int z)
 	_world->addJoint(joint1);
 	_world->addJoint(joint2);
 }
+
+//void PhysicsWor::Joint10(DrawNode*a, DrawNode*b, Vec2 aPos, Vec2 bPos, Vec2 aCen, Vec2 bCen)
+//{
+//	auto aBody = a->getPhysicsBody();
+//	auto bBody = b->getPhysicsBody();
+//	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody, (aPos - aCen), (bPos - bCen));
+//	_world->addJoint(joint);
+//}
