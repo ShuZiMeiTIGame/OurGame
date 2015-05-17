@@ -368,10 +368,13 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 	Vec2 a1 = points[1];
 	Vec2 a2 = points[2];
 	Vec2 a3 = points[3];
+<<<<<<< HEAD
 	std::vector<Vec2>* poi;
 	poi->push_back(a1);
 	poi->push_back(a2);
 	poi->push_back(a3);
+=======
+>>>>>>> origin/master
 	int t;
 	Vec2 c = (a1 + a2 + a3) / 3;
 	if (a1.y < a2.y)  {
@@ -384,7 +387,15 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 		t = a1.y, a1.y = a2.y, a2.y = t;
 	}
 	int hi = (a1 - c).y;
+<<<<<<< HEAD
 	auto a = PhysicsWor::addSan(p, poi);
+=======
+	std::vector<Vec2> poi;
+	poi.push_back(a1);
+	poi.push_back(a2);
+	poi.push_back(a3);
+	auto a = PhysicsWor::addSan(p, &poi);
+>>>>>>> origin/master
 	auto aBody = a->getPhysicsBody();
 	auto w = a4.x;
 	auto h = a4.y;
