@@ -20,6 +20,15 @@ bool GameTime::init(int level){
 	//获取屏幕大小
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	//物理边界
+	auto box = PhysicsBody::createEdgeBox(Size(visibleSize.width, visibleSize.height));
+	//重要
+	box->getShape(0)->setRestitution(0.0f);
+	box->getShape(0)->setFriction(0.2f);
+	auto boxNode = Node::create();
+	boxNode->setPosition(visibleSize / 2);
+	boxNode->setPhysicsBody(box);
+	addChild(boxNode);
 	//调用myUpdate函数判定ball是否到达相应位置
 	_level = level;
 	//背景层
@@ -34,7 +43,7 @@ bool GameTime::init(int level){
 	gameLayer->setLevel(_level, statusLayer);
 	gameLayer->setPhysicsWorld(this->getPhysicsWorld());
 	gameLayer->loadTollgate(level);
-	//addChild(bgLayer, 1);
+	addChild(bgLayer, 1);
 	addChild(gameLayer, 2);
 	addChild(paintingLayer, 3);
 	addChild(statusLayer, 4);
@@ -81,7 +90,7 @@ void GameTime::update(float df){
 	getPhysicsWorld()->step(0.02f);
 	auto ballPos = gameLayer->getBallPos();
 	auto winSize = Director::getInstance()->getWinSize();
-	if (abs(ballPos.x - winSize.width) < 100 && abs(ballPos.y - winSize.height) < 1000){
+	if (abs(ballPos.x - winSize.width) < 30 && abs(ballPos.y - winSize.height) < 1000){
 		if (_level < 10) _level++;
 		newTollgate(_level);
 		CCLOG("newTollgate------%d", _level);

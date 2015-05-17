@@ -31,7 +31,8 @@ bool StartScene::init(){
 
 void StartScene::menuCallBack_S(Ref* ref){
 	//Transaction
-	Director::getInstance()->replaceScene(GameTime::create(2));
+	Director::getInstance()->pushScene(Director::getInstance()->getRunningScene());
+	Director::getInstance()->replaceScene(GameTime::create(5));
 }
 void StartScene::menuCallBack_A(Ref* ref){
 

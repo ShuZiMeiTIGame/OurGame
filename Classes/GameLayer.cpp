@@ -5,14 +5,8 @@ bool GameLayer::init(){
 	//获取屏幕大小
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	//物理边界
-	auto box = PhysicsBody::createEdgeBox(Size(visibleSize.width,visibleSize.height));
-	//重要
-	box->getShape(0)->setRestitution(0.0f);
-	auto boxNode = Node::create();
-	boxNode->setPosition(visibleSize / 2);
-	boxNode->setPhysicsBody(box);
-	addChild(boxNode);
+	//setContentSize(getContentSize()  * 2);
+	scheduleUpdate();
 	////加载关卡
 	//loadTollgate(_level);
 	//scheduleUpdate();
@@ -58,7 +52,6 @@ void GameLayer::loadTollgate(int level){
 
 	PhysicsBody* b1;
 	PhysicsBody* b2;
-
 	auto j = bodies->begin();
 	while (j != bodies->end()){
 		int type = (*j)->getType();
@@ -109,6 +102,9 @@ void GameLayer::loadTollgate(int level){
 			}
 			addChild(polygon);
 		}
+		else if (type == TollgateBody::JOINT_3){
+			pw.Joint3((*j)->getPosition(),(*j)->getPosArray());
+		}
 		j++;
 	}
 	//Vec2 pos = ((*body2->getPosArray())[0] - (*body2->getPosArray())[1]) / 2;
@@ -130,6 +126,7 @@ Vec2 GameLayer::getBallPos(){
 }
 void GameLayer::update(float t){
 	Layer::update(t);
+	this->setPosition(Vec2(getPositionX() - 0.5f, getPositionY()));
 }
 DrawNode* GameLayer::getBall(){
 	return ballSprite;

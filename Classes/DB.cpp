@@ -402,7 +402,47 @@ Tollgate* DB::GetOneTableAllInfo(std::string dbExec,int ID)
 				bodyptr->getPosArray()->push_back(point8);
 				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
 
-			};  
+			}
+			if (Classifiaction == TollgateBody::JOINT_3)
+			{
+				pos.x = sqlite3_column_double(statement, 3);
+				pos.y = sqlite3_column_double(statement, 4);
+
+				point1.x = sqlite3_column_double(statement, 6);
+				point1.y = sqlite3_column_double(statement, 7);
+
+				point2.x = sqlite3_column_double(statement, 8);
+				point2.y = sqlite3_column_double(statement, 9);
+
+				point3.x = sqlite3_column_double(statement, 10);
+				point3.y = sqlite3_column_double(statement, 11);
+
+				point4.x = sqlite3_column_double(statement, 12);
+				point4.y = sqlite3_column_double(statement, 13);
+
+				point5.x = sqlite3_column_double(statement, 14);
+				point5.y = sqlite3_column_double(statement, 15);
+
+				point6.x = sqlite3_column_double(statement, 16);
+				point6.y = sqlite3_column_double(statement, 17);
+
+				point7.x = sqlite3_column_double(statement, 18);
+				point7.y = sqlite3_column_double(statement, 19);
+
+				point8.x = sqlite3_column_double(statement, 20);
+				point8.y = sqlite3_column_double(statement, 21);
+
+				auto bodyptr = TollgateBody::createTollgateBody(Classifiaction, pos);
+				bodyptr->getPosArray()->push_back(point1);
+				bodyptr->getPosArray()->push_back(point2);
+				bodyptr->getPosArray()->push_back(point3);
+				bodyptr->getPosArray()->push_back(point4);
+				bodyptr->getPosArray()->push_back(point5);
+				bodyptr->getPosArray()->push_back(point6);
+				bodyptr->getPosArray()->push_back(point7);
+				bodyptr->getPosArray()->push_back(point8);
+				Tollgateptr->getbodiesArray()->pushBack(bodyptr);
+			}
 
 		}
 

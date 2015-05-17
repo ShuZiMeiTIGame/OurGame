@@ -68,9 +68,14 @@ void PaintingLayer::OnTouchMoved(Touch* touch, Event* event_){
 
 	cur_point = touch->getLocation();
 	if (isPolygon){
+		if (pointArray.size() == 1){
+			pointArray.push_back(cur_point);
+			return;
+		}
 		auto end = *(pointArray.end() - 1);
 		Vec2 dis = cur_point - end;
-		if (sqrt(dis.x * dis.x + dis.y * dis.y) > 30)
+		if (sqrt(dis.x * dis.x + dis.y * dis.y) > 36)
+		if (pointArray.size() < 200)
 			pointArray.push_back(cur_point);
 	}
 	if (isTriangle || isCircle || isBox){
@@ -133,7 +138,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 				tubao[j] = *right;
 				pointArray.erase(right);
 			}
-
 			std::vector<Vec2> valuePos;
 			valuePos.push_back(tubao[0]);
 			valuePos.push_back(tubao[1]);
@@ -195,7 +199,6 @@ void PaintingLayer::OnTouchEnded(Touch* touch, Event* event_){
 			pointArray.clear();
 			drawNode->clear();
 		}
-
 	}
 	if (isCircle){
 		//int r = std::abs(pointArray[0].x - pointArray[1].x)/ 2;
@@ -281,7 +284,7 @@ void PaintingLayer::OnMenuClicked(Ref* ref){
 		isCircle = true;
 		break;
 	case 6:
-		//Director::getInstance()->replaceScene(StartScene::createScene());
+		Director::getInstance()->popScene();
 		break;
 	default:
 		break;
@@ -294,4 +297,3 @@ bool PaintingLayer::isRight(Vec2 p1, Vec2 p2, Vec2 p3){
 		return true;
 	return false;
 }
-

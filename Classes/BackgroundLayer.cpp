@@ -6,7 +6,7 @@ bool BackgroundLayer::init(){
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	//±³¾°É«
-	auto bg = CCLayerColor::create(Color4B(34, 177, 22, 255), visibleSize.width, visibleSize.height);
+	auto bg = CCLayerColor::create(Color4B(34, 177, 22, 255), visibleSize.width * 2, visibleSize.height * 2);
 	//auto bg = CCLayerColor::create(Color4B(0, 0, 0, 255), visibleSize.width, visibleSize.height);
 	//auto bg = CCLayerColor::create(Color4B(255, 255, 255, 255), visibleSize.width, visibleSize.height);
 	addChild(bg);
