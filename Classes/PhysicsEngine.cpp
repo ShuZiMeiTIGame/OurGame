@@ -355,7 +355,7 @@ void PhysicsWor::Joint2(Vec2 p)
 
 }
 
-void PhysicsWor::Joint3(Vec2 p, float w, float h,std::vector<Vec2>* pos )
+void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 {
 	Point points[3];
 	int j = 0;
@@ -364,9 +364,10 @@ void PhysicsWor::Joint3(Vec2 p, float w, float h,std::vector<Vec2>* pos )
 		points[j++] = *i;
 		i++;
 	}
-	Vec2 a1 = points[0];
-	Vec2 a2 = points[1];
-	Vec2 a3 = points[2];
+	Vec2 a4 = points[0];
+	Vec2 a1 = points[1];
+	Vec2 a2 = points[2];
+	Vec2 a3 = points[3];
 	int t;
 	Vec2 c = (a1 + a2 + a3) / 3;
 	if (a1.y < a2.y)  {
@@ -379,8 +380,14 @@ void PhysicsWor::Joint3(Vec2 p, float w, float h,std::vector<Vec2>* pos )
 		t = a1.y, a1.y = a2.y, a2.y = t;
 	}
 	int hi = (a1 - c).y;
-	auto a = PhysicsWor::addSan(p, pos);
+	std::vector<Vec2> poi;
+	poi.push_back(a1);
+	poi.push_back(a2);
+	poi.push_back(a3);
+	auto a = PhysicsWor::addSan(p, &poi);
 	auto aBody = a->getPhysicsBody();
+	auto w = a4.x;
+	auto h = a4.y;
 	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
 	Vec2 box1 = (boxCenter + Vec2(-w / 2, h / 2));
 	Vec2 box2 = (boxCenter + Vec2(w / 2, -h / 2));
