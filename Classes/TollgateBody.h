@@ -27,6 +27,9 @@ public:
 	const static int RECT_S = 12;
 	const static int CIRCLE_S = 13;
 	const static int POLYGON_S = 14;
+
+	const static int JOINT_3 = 40;
+
 private:
 	int _type;
 	int _radius;
