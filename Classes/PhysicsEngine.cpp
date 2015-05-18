@@ -341,18 +341,25 @@ void PhysicsWor::Joint2(Vec2 p)
 	auto a = PhysicsWor::addSan(p, pos);
 	auto aBody = a->getPhysicsBody();*/
 
+	//auto a = Sprite::create();
+	//auto aBody = PhysicsBody::create();
+	//Point vert1[4] = { Point(186.00000, 280.00000), Point(131.00000, 236.00000), Point(131.00000, 342.00000), Point(186.00000, 342.00000) };
+	//aBody->addShape(PhysicsShapePolygon::create(vert1, 4));
+	//Point vert2[4] = { Point(186.00000, 280.00000), Point(676.00000, 280.00000), Point(676.00000, 236.00000), Point(131.00000, 236.00000) };
+	//aBody->addShape(PhysicsShapePolygon::create(vert2, 4));
+	//a->setPhysicsBody(aBody);
+	//a->setPosition(p);
+	//_layer->addChild(a, 1);
 	/*auto aBox = PhysicsWor::addBox(p, p + Vec2(350, 30), 5);
-	auto bBox = PhysicsWor::addBox(p, p - Vec2(30, -60), 5);*/
-	auto a = Sprite::create();
-	auto aBody = PhysicsBody::create();
-	Point vert1[4] = { Point(186.00000, 280.00000), Point(131.00000, 236.00000), Point(131.00000, 342.00000), Point(186.00000, 342.00000) };
-	aBody->addShape(PhysicsShapePolygon::create(vert1, 4));
-	Point vert2[4] = { Point(186.00000, 280.00000), Point(676.00000, 280.00000), Point(676.00000, 236.00000), Point(131.00000, 236.00000) };
-	aBody->addShape(PhysicsShapePolygon::create(vert2, 4));
-	a->setPhysicsBody(aBody);
-	a->setPosition(p);
-	_layer->addChild(a, 1);
-
+	auto bBox = PhysicsWor::addBox(p, p - Vec2(30, -60), 5);
+	auto aBody = aBox->getPhysicsBody();
+	auto bBody = bBox->getPhysicsBody();
+	aBody->addShape(PhysicsShapeBox::create(Size(30, 60),
+		PHYSICSSHAPE_MATERIAL_DEFAULT,Vec2(-175,0)));
+	aBox->setPhysicsBody(aBody);
+	aBox->setPosition(p);
+	_layer->addChild(aBox, 1);
+	_layer->addChild(bBox);*/
 }
 
 void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
@@ -403,7 +410,7 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 	auto bBody = b->getPhysicsBody();
 	aBody->setCategoryBitmask(00001);
 	bBody->setCollisionBitmask(10000);
-	//bBody->setDynamic(false);
+	aBody->setDynamic(false);
 	_layer->addChild(a, 1);
 	_layer->addChild(b, 1);
 	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody,
