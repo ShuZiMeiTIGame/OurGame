@@ -357,17 +357,11 @@ void PhysicsWor::Joint2(Vec2 p)
 
 void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 {
-	Point points[3];
-	int j = 0;
-	auto i = pos->begin();
-	while (i != pos->end()){
-		points[j++] = *i;
-		i++;
-	}
-	Vec2 a4 = points[0];
-	Vec2 a1 = points[1];
-	Vec2 a2 = points[2];
-	Vec2 a3 = points[3];
+
+	Vec2 a4 = (*pos)[0];
+	Vec2 a1 = (*pos)[1];
+	Vec2 a2 = (*pos)[2];
+	Vec2 a3 = (*pos)[3];
 
 	std::vector<Vec2> poi;
 	poi.push_back(a3);
