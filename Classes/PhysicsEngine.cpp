@@ -357,7 +357,17 @@ void PhysicsWor::Joint2(Vec2 p)
 
 void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 {
-
+	/*Point points[3];
+	int j = 0;
+	auto i = pos->begin();
+	while (i != pos->end()){
+		points[j++] = *i;
+		i++;
+	}
+	Vec2 a4 = points[0];
+	Vec2 a1 = points[1];
+	Vec2 a2 = points[2];
+	Vec2 a3 = points[3];*/
 	Vec2 a4 = (*pos)[0];
 	Vec2 a1 = (*pos)[1];
 	Vec2 a2 = (*pos)[2];
@@ -384,27 +394,20 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 	}
 	int hi = (a1 - c).y;
 
-	/*Point poi[] = { a3, a2, a1 };
-	PhysicsBody*aBody = PhysicsBody::createPolygon(poi, 3, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
-	aBody->getShape(0)->setRestitution(0);
-	aBody->getShape(0)->setFriction(1.0f);
-	aBody->getShape(0)->setDensity(0.5f);
-
-	DrawNode* a = DrawNode::create();
-	a->setPosition(c);
-	a->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
-	a->setPhysicsBody(aBody);*/
 	auto w = a4.x;
 	auto h = a4.y;
-	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
-	Vec2 box1 = (boxCenter + Vec2(-w / 2, h / 2));
-	Vec2 box2 = (boxCenter + Vec2(w / 2, -h / 2));
-	auto b = PhysicsWor::addBox(box1, box2, 0.5);
+	Vec2 boxCenter = Vec2(Vec2(c.x, a1.y + h / 2));//a1+ Vec2(-(a1-c).x, 0) + Vec2(0, -h/2)
+	Vec2 box1 = (boxCenter + Vec2(w / 2, h / 2));
+	Vec2 box2 = (boxCenter + Vec2(-w / 2, -h / 2));
+	auto b = PhysicsWor::addBox(box2, box1, 0.5);
 	auto bBody = b->getPhysicsBody();
+	aBody->setCategoryBitmask(00001);
+	bBody->setCollisionBitmask(10000);
+	//bBody->setDynamic(false);
 	_layer->addChild(a, 1);
 	_layer->addChild(b, 1);
 	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody,
-		Vec2(0, hi), Vec2(0, -b->getContentSize().height / 2));
+		Vec2(0, hi), Vec2(0, -h / 2));//-b->getContentSize().height / 2
 	_world->addJoint(joint);
 }
 
