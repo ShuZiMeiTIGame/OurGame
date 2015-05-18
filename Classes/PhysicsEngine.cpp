@@ -368,13 +368,15 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 	Vec2 a1 = points[1];
 	Vec2 a2 = points[2];
 	Vec2 a3 = points[3];
-<<<<<<< HEAD
-	std::vector<Vec2>* poi;
-	poi->push_back(a1);
-	poi->push_back(a2);
-	poi->push_back(a3);
-=======
->>>>>>> origin/master
+
+	std::vector<Vec2> poi;
+	poi.push_back(a3);
+	poi.push_back(a2);
+	poi.push_back(a1);
+	//auto a = PhysicsWor::addSan(p, &poi);
+	auto a = PhysicsWor::addPolygon(&poi);
+	auto aBody = a->getPhysicsBody();
+
 	int t;
 	Vec2 c = (a1 + a2 + a3) / 3;
 	if (a1.y < a2.y)  {
@@ -387,16 +389,17 @@ void PhysicsWor::Joint3(Vec2 p, std::vector<Vec2>* pos )
 		t = a1.y, a1.y = a2.y, a2.y = t;
 	}
 	int hi = (a1 - c).y;
-<<<<<<< HEAD
-	auto a = PhysicsWor::addSan(p, poi);
-=======
-	std::vector<Vec2> poi;
-	poi.push_back(a1);
-	poi.push_back(a2);
-	poi.push_back(a3);
-	auto a = PhysicsWor::addSan(p, &poi);
->>>>>>> origin/master
-	auto aBody = a->getPhysicsBody();
+
+	/*Point poi[] = { a3, a2, a1 };
+	PhysicsBody*aBody = PhysicsBody::createPolygon(poi, 3, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
+	aBody->getShape(0)->setRestitution(0);
+	aBody->getShape(0)->setFriction(1.0f);
+	aBody->getShape(0)->setDensity(0.5f);
+
+	DrawNode* a = DrawNode::create();
+	a->setPosition(c);
+	a->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
+	a->setPhysicsBody(aBody);*/
 	auto w = a4.x;
 	auto h = a4.y;
 	Vec2 boxCenter = (p + Vec2(0, hi) + Vec2(0, h / 2));
