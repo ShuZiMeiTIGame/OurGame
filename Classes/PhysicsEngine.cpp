@@ -65,7 +65,8 @@ DrawNode* PhysicsWor::addBox(Vec2 a, Vec2 b, float c)
 DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Point points[3];
+	int size = pos->size();
+	Point *points = new Point[size];
 	Vec2 c1 = Vec2(0, 0);
 	int j = 0;
 	auto i = pos->begin();
@@ -75,64 +76,31 @@ DrawNode *PhysicsWor::addSan(Vec2 a, std::vector<Vec2>* pos)
 		i++;
 	}
 	Vec2 c = c1 / j;
-	/////////////////////
-	//int arrL = sizeof(points) / sizeof(points[0]);
-	Point poi[3];
+	//Vec2 a1 = Vec2((points[0].y - c.y), (points[0].x - c.x));
+	//Vec2 a2 = Vec2((points[1].y - c.y), (points[1].x - c.x));
+	//Vec2 a3 = Vec2((points[2].y - c.y), (points[2].x - c.x));
+	if ((points[2].x - points[0].x)*(c.y - points[0].y) - (c.x - points[0].x)*(points[2].y - points[0].y)>0)
+	{
+		Vec2 q = points[0];
+		points[0] = points[2];
+		points[2] = q;
+	}
+	int q = pos->size();
+	Point *poi = new Point[size];
 	for (int i = 0; i < j; i++)
 	{
-		poi[i] = points[i] - c;
-		
+		poi[--q] = points[i] - c;
+
 	}
-	///////
-	/*Vec2 a1 = points[0];
-	Vec2 a2 = points[1];
-	Vec2 a3 = points[2];*/
+	PhysicsBody*polygonBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
+	polygonBody->getShape(0)->setRestitution(0);
+	polygonBody->getShape(0)->setFriction(1.0f);
+	polygonBody->getShape(0)->setDensity(0.5f);
 
-	//float w = (a3 + a1).x;
-	//float h = (a2 + a1).y;
-	//Vec2 c = Vec2(w, h);
-	//Vec2 b1 = a1 - c;
-	//Vec2 b2 = a2 - c;
-	//Vec2 b3 = a3 - c;
-	//µÈÑü
-	//float w = (a3 - a1).x;
-	//float h = (a2 - a1).y;
-	//Vec2 c = Vec2(w, h);
-	//Vec2 b1 = Vec2(-w / 2, -h / 2);
-	//Vec2 b2 = Vec2(0, h / 2);
-	//Vec2 b3 = Vec2(w / 2, -h / 2);
-	//Vec2 poi[3] = { b1, b2, b3 };
-	//san->setScale(2 * (a3 - a1).x / san->getContentSize().width);
-	//ÌØÁÐ
-	//float w = (a3 + a1).x / 2;
-	//float h = (a2 + a1).y / 2;
-	//Vec2 b2 = Vec2(a2.x - w, a2.y - h);
-	//Vec2 b1 = Vec2(a1.x - w, a1.y - h);
-	//Vec2 b3 = Vec2(a3.x - w, a3.y - h);
-	//Vec2 poi[3] = { b1, b2, b3 };
-	////
-
-	/*Vec2 c = (a1 + a2 + a3) / 3;
-	Vec2 b1 = a1 - c;
-	Vec2 b2 = a2 - c;
-	Vec2 b3 = a3 - c;
-	Vec2 poi[3] = { b1, b2, b3 }; */
-	PhysicsBody*sanBody = PhysicsBody::createPolygon(poi, j, PHYSICSBODY_MATERIAL_DEFAULT, Vec2::ZERO);
-	sanBody->getShape(0)->setRestitution(0);
-	sanBody->getShape(0)->setFriction(1.0f);
-	sanBody->getShape(0)->setDensity(5);
-	
-	/*auto san = Sprite::create();
-	san->setPosition(a);
-	san->setPhysicsBody(sanBody);*/
-	//sanBody->setDynamic(false);
-	//sanBody->getShape(0)->recenterPoints(poi, 3, Vec2(0,0));
 	DrawNode* draw = DrawNode::create();
-	//draw->setAnchorPoint(Vec2::ZERO);
-	//draw->setAnchorPoint(a);
-	draw->setPosition(a);
-	draw->drawPolygon(poi, 3, Color4F::WHITE, 1, Color4F::WHITE);
-	draw->setPhysicsBody(sanBody);
+	draw->setPosition(c);
+	draw->drawPolygon(poi, j, Color4F::WHITE, 1, Color4F::WHITE);
+	draw->setPhysicsBody(polygonBody);
 	return draw;
 }
 
@@ -463,3 +431,4 @@ void PhysicsWor::Joint6(Vec2 p, float w,float h, float r,int z)
 //	PhysicsJointDistance*joint = PhysicsJointDistance::construct(aBody, bBody, (aPos - aCen), (bPos - bCen));
 //	_world->addJoint(joint);
 //}
+
